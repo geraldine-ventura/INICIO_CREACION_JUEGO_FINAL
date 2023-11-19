@@ -1,9 +1,12 @@
 from models.auxiliar import SurfaceManager as sf
 import pygame as pg
-from models.constantes import ANCHO_VENTANA, DEBUG
+from models.constantes import ANCHO_VENTANA, DEBUG, ALTO_VENTANA
 
 
+# Define una clase llamada Jugador que representa al personaje del juego.
 class Jugador:
+    # El método __init__ es el constructor de la clase. Inicializa las propiedades del jugador, como la posición inicial
+    # (coord_x y coord_y), la velocidad de animación (frame_rate), las velocidades de caminar y correr, la gravedad y la altura del salto.
     def __init__(
         self,
         coord_x,
@@ -14,6 +17,9 @@ class Jugador:
         gravity=16,
         jump=32,
     ):
+        # Carga una superficie de sprites para la animación de reposo del jugador mirando hacia la derecha
+        # utilizando el método ""get_surface_from_spritesheet" de la clase SurfaceManager.
+
         self.__iddle_r = sf.get_surface_from_spritesheet(
             "Pygame_COR_CAM_SAL_LIM/assets/img/player/iddle/player_idle.png", 5, 1
         )
@@ -23,6 +29,8 @@ class Jugador:
             1,
             flip=True,
         )
+        # flip=True se utiliza para espejar la imagen horizontalmente y crear la versión reflejada de la animación original.
+
         self.__walk_r = sf.get_surface_from_spritesheet(
             "Pygame_COR_CAM_SAL_LIM/assets/img/player/walk/player_walk.png", 6, 1
         )
@@ -50,6 +58,8 @@ class Jugador:
             1,
             flip=True,
         )
+
+        # Inicializa las propiedades del jugador, como su posición (__move_x y __move_y), velocidades, tiempo de animación, gravedad, etc.
         self.__move_x = coord_x
         self.__move_y = coord_y
         self.__speed_walk = speed_walk
@@ -66,6 +76,8 @@ class Jugador:
         self.__rect = self.__actual_img_animation.get_rect()
         self.__is_looking_right = True
 
+    ###---------------------------------------------------------------------------------------->
+    # Un método privado que configura las animaciones horizontales del jugador.
     def __set_x_animations_preset(
         self, move_x, animation_list: list[pg.surface.Surface], look_r: bool
     ):
@@ -73,6 +85,7 @@ class Jugador:
         self.__actual_animation = animation_list
         self.__is_looking_right = look_r
 
+    # Un método privado que configura las animaciones verticales del jugador, específicamente para el salto.
     def __set_y_animations_preset(self):
         self.__move_y = -self.__jump
         self.__move_x = (
@@ -84,6 +97,7 @@ class Jugador:
         self.__initial_frame = 0
         self.__is_jumping = True
 
+    # Un método que se llama cuando el jugador está caminando. Cambia las animaciones y la dirección según la tecla presionada.
     def walk(self, direction: str = "Right"):
         match direction:
             case "Right":
@@ -111,6 +125,7 @@ class Jugador:
                     -self.__speed_run, self.__run_l, look_r=look_right
                 )
 
+    # Un método que se llama cuando el jugador está en reposo. Ajusta las animaciones y la posición del jugador.
     def stay(self):
         if (
             self.__actual_animation != self.__iddle_l
@@ -149,13 +164,14 @@ class Jugador:
             pixels_move = (
                 self.__move_y
                 if self.__rect.y
-                < ANCHO_VENTANA - self.__actual_img_animation.get_height()
+                < ALTO_VENTANA - self.__actual_img_animation.get_height()
                 else 0
             )
         elif self.__move_y < 0:
             pixels_move = self.__move_y if self.__rect.y > 0 else 0
         return pixels_move
 
+    # Un método que maneja el movimiento del jugador en función del tiempo delta_ms.
     def do_movement(self, delta_ms):
         self.__player_move_time += delta_ms
         if self.__player_move_time >= self.__frame_rate:
@@ -178,13 +194,21 @@ class Jugador:
                 #     self.__is_jumping = False
                 #     self.__move_y = 0
 
+    # Un método que actualiza el estado del jugador en función del tiempo delta_ms.
     def update(self, delta_ms):
         self.do_movement(delta_ms)
         self.do_animation(delta_ms)
 
+    # Un método que dibuja al jugador en la pantalla.
+    # el método draw se encarga de renderizar visualmente al jugador en la pantalla del juego.
     def draw(self, screen: pg.surface.Surface):
         if DEBUG:
+            # dibuja un rectángulo rojo (pg.draw.rect) alrededor del jugador para visualizar su posición.
             pg.draw.rect(screen, "red", self.__rect)
             # pg.draw.rect(screen, 'green', self.__rect.bottom)
+
+        # Luego, obtiene la imagen actual de la animación en base al índice actual
         self.__actual_img_animation = self.__actual_animation[self.__initial_frame]
+
+        # Utiliza screen.blit para colocar esa imagen en la posición definida por el rectángulo del jugador (self.__rect).
         screen.blit(self.__actual_img_animation, self.__rect)
