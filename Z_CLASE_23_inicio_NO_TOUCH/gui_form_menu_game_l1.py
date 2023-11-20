@@ -29,7 +29,7 @@ class FormGameLevel1(Form):
             h=50,
             color_background=None,
             color_border=None,
-            image_background="CLASE_23_inicio_juego/images/gui/set_gui_01/Comic_Border/Buttons/Button_L_02.png",
+            image_background="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Buttons/Button_L_02.png",
             on_click=self.on_click_boton1,
             on_click_param="form_menu_B",
             text="BACK",
@@ -45,7 +45,7 @@ class FormGameLevel1(Form):
             h=50,
             color_background=None,
             color_border=None,
-            image_background="CLASE_23_inicio_juego/images/gui/set_gui_01/Comic_Border/Buttons/Button_M_02.png",
+            image_background="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Buttons/Button_M_02.png",
             on_click=self.on_click_boton1,
             on_click_param="form_menu_B",
             text="PAUSE",
@@ -61,7 +61,7 @@ class FormGameLevel1(Form):
             h=50,
             color_background=None,
             color_border=None,
-            image_background="CLASE_23_inicio_juego/images/gui/set_gui_01/Comic_Border/Buttons/Button_M_02.png",
+            image_background="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Buttons/Button_M_02.png",
             on_click=self.on_click_shoot,
             on_click_param="form_menu_B",
             text="SHOOT",
@@ -78,8 +78,8 @@ class FormGameLevel1(Form):
             h=50,
             color_background=None,
             color_border=None,
-            image_background="CLASE_23_inicio_juego/images/gui/set_gui_01/Comic_Border/Bars/Bar_Background01.png",
-            image_progress="CLASE_23_inicio_juego/images/gui/set_gui_01/Comic_Border/Bars/Bar_Segment05.png",
+            image_background="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Bars/Bar_Background01.png",
+            image_progress="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Bars/Bar_Segment05.png",
             value=5,
             value_max=5,
         )
@@ -91,9 +91,10 @@ class FormGameLevel1(Form):
             y=0,
             width=w,
             height=h,
-            path="CLASE_23_inicio_juego/images/locations/set_bg_01/forest/all.png",
+            path="Z_CLASE_23_inicio_NO_TOUCH/images/locations/set_bg_01/forest/all.png",
         )
-
+        # Z_CLASE_23_inicio_NO_TOUCH/background.py
+        # Z_CLASE_23_inicio_NO_TOUCH/images/locations/set_bg_01/forest/all.png
         self.player_1 = Player(
             x=0,
             y=400,
@@ -178,7 +179,7 @@ class FormGameLevel1(Form):
                     self.player_1.rect.centerx,
                     self.player_1.rect.centery,
                     20,
-                    path="CLASE_23_inicio_juego/images/gui/set_gui_01/Comic_Border/Bars/Bar_Segment05.png",
+                    path="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Bars/Bar_Segment05.png",
                     frame_rate_ms=100,
                     move_rate_ms=20,
                     width=5,

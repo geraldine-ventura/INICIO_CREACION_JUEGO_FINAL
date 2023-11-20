@@ -1,60 +1,78 @@
 import pygame
+from pygame.locals import *
 import sys
 from constantes import *
-from player import Player
+from gui_form import Form
+from gui_form_menu_A import FormMenuA
+from gui_form_menu_B import FormMenuB
+from gui_form_menu_C import FormMenuC
+from gui_form_menu_game_l1 import FormGameLevel1
 
-# Inicializar Pygame
+
+flags = DOUBLEBUF
+screen = pygame.display.set_mode((ANCHO_VENTANA, ALTO_VENTANA), flags, 16)
 pygame.init()
-
-# Configurar la pantalla
-screen = pygame.display.set_mode((ANCHO_VENTANA, ALTO_VENTANA))
 clock = pygame.time.Clock()
 
-# Cargar imagen de fondo y escalarla
-imagen_fondo = pygame.image.load(
-    "CLASE_19_inicio_juego/images/locations/forest/all.png"
+form_menu_A = FormMenuA(
+    name="form_menu_A",
+    master_surface=screen,
+    x=300,
+    y=200,
+    w=500,
+    h=400,
+    color_background=(255, 255, 0),
+    color_border=(255, 0, 255),
+    active=True,
 )
-imagen_fondo = pygame.transform.scale(imagen_fondo, (ANCHO_VENTANA, ALTO_VENTANA))
+form_menu_B = FormMenuB(
+    name="form_menu_B",
+    master_surface=screen,
+    x=300,
+    y=200,
+    w=500,
+    h=400,
+    color_background=(0, 255, 255),
+    color_border=(255, 0, 255),
+    active=False,
+)
+form_menu_C = FormMenuC(
+    name="form_menu_C",
+    master_surface=screen,
+    x=0,
+    y=0,
+    w=ANCHO_VENTANA,
+    h=ALTO_VENTANA,
+    color_background=(0, 255, 255),
+    color_border=(255, 0, 255),
+    active=False,
+)
 
-# Crear instancia del jugador con valores predeterminados
-player_1 = Player(0, 0, 4, 8, 8, 16, frame_rate_ms=100, move_rate_ms=50, jump_height=10)
+form_game_L1 = FormGameLevel1(
+    name="form_game_L1",
+    master_surface=screen,
+    x=0,
+    y=0,
+    w=ANCHO_VENTANA,
+    h=ALTO_VENTANA,
+    color_background=(0, 255, 255),
+    color_border=(255, 0, 255),
+    active=False,
+)
 
 while True:
-    for event in pygame.event.get():
+    lista_eventos = pygame.event.get()
+    for event in lista_eventos:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
 
-        # Manejar eventos de teclado
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                player_1.control("WALK_L")
-            elif event.key == pygame.K_RIGHT:
-                player_1.control("WALK_R")
-            elif event.key == pygame.K_SPACE:
-                # Aquí puedes manejar diferentes acciones según las teclas
-                player_1.control("JUMP_R")
-                player_1.control("RUN_R")
-
-        elif event.type == pygame.KEYUP:
-            if (
-                event.key == pygame.K_LEFT
-                or event.key == pygame.K_RIGHT
-                or event.key == pygame.K_SPACE
-            ):
-                player_1.control("STAY")
-
-    # Limpiar la pantalla con la imagen de fondo
-    screen.blit(imagen_fondo, imagen_fondo.get_rect())
-
-    # Actualizar y dibujar al jugador
-    player_1.update()
-    player_1.draw(screen)
-
-    # Aquí puedes agregar la lógica para actualizar enemigos y dibujar el nivel
-
-    # Actualizar la pantalla
-    pygame.display.flip()
-
-    # Controlar la velocidad del bucle
+    keys = pygame.key.get_pressed()
     delta_ms = clock.tick(FPS)
+
+    aux_form_active = Form.get_active()
+    if aux_form_active != None:
+        aux_form_active.update(lista_eventos, keys, delta_ms)
+        aux_form_active.draw()
+
+    pygame.display.flip()

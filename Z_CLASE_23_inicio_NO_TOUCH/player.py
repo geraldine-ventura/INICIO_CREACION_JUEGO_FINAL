@@ -23,57 +23,76 @@ class Player:
         """
         # CLASE_23_inicio_juego/images/caracters/players/cowgirl/Idle (1).png
         self.stay_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "CLASE_23_inicio_juego/images/caracters/players/cowgirl/Idle ({0}).png",
+            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Idle ({0}).png",
             1,
             10,
             flip=False,
             scale=p_scale,
         )
         self.stay_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "CLASE_23_inicio_juego/images/caracters/players/cowgirl/Idle ({0}).png",
+            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Idle ({0}).png",
             1,
             10,
             flip=True,
             scale=p_scale,
         )
         self.jump_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "CLASE_23_inicio_juego/images/caracters/players/cowgirl/Jump ({0}).png",
+            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Jump ({0}).png",
             1,
             10,
             flip=False,
             scale=p_scale,
         )
         self.jump_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "CLASE_23_inicio_juego/images/caracters/players/cowgirl/Jump ({0}).png",
+            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Jump ({0}).png",
             1,
             10,
             flip=True,
             scale=p_scale,
         )
         self.walk_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "CLASE_23_inicio_juego/images/caracters/players/cowgirl/Run ({0}).png",
+            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Run ({0}).png",
             1,
             8,
             flip=False,
             scale=p_scale,
         )
         self.walk_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "CLASE_23_inicio_juego/images/caracters/players/cowgirl/Run ({0}).png",
+            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Run ({0}).png",
             1,
             8,
             flip=True,
             scale=p_scale,
         )
+
+        ##-----------run-path---------->
+        self.run_r = Auxiliar.getSurfaceFromSeparateFiles(
+            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Slide ({0}).png",
+            1,
+            5,
+            flip=False,
+            scale=p_scale,
+        )
+        self.run_l = Auxiliar.getSurfaceFromSeparateFiles(
+            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Slide ({0}).png",
+            1,
+            5,
+            flip=True,
+            scale=p_scale,
+        )
+        ##---------run-path----------->
+
         self.shoot_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "CLASE_23_inicio_juego/images/caracters/players/cowgirl/Shoot ({0}).png",
+            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Shoot ({0}).png",
             1,
             3,
             flip=False,
             scale=p_scale,
             repeat_frame=2,
         )
+        # Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Shoot (1).png
         self.shoot_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "CLASE_23_inicio_juego/images/caracters/players/cowgirl/Shoot ({0}).png",
+            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Shoot ({0}).png",
             1,
             3,
             flip=True,
@@ -81,7 +100,7 @@ class Player:
             repeat_frame=2,
         )
         self.knife_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "CLASE_23_inicio_juego/images/caracters/players/cowgirl/Melee ({0}).png",
+            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Melee ({0}).png",
             1,
             7,
             flip=False,
@@ -89,7 +108,7 @@ class Player:
             repeat_frame=1,
         )
         self.knife_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "CLASE_23_inicio_juego/images/caracters/players/cowgirl/Melee ({0}).png",
+            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Melee ({0}).png",
             1,
             7,
             flip=True,
@@ -97,6 +116,7 @@ class Player:
             repeat_frame=1,
         )
 
+        # Inicializa las propiedades del jugador, como su posición (__move_x y __mov
         self.frame = 0
         self.lives = 5
         self.score = 0
@@ -112,15 +132,23 @@ class Player:
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        ###----------------COALISIONES---------->>>>>>>>>>>>>>>>>>>>>
+        # está definiendo un rectángulo de colisión que es más estrecho que el rectángulo original
+        # y está desplazado hacia la derecha en un tercio del ancho del rectángulo original.
         self.collition_rect = pygame.Rect(
             x + self.rect.width / 3, y, self.rect.width / 3, self.rect.height
         )
+
+        # estas líneas crean y configuran un rectángulo de colisión específicamente diseñado
+        # para la detección de colisiones con el suelo
         self.ground_collition_rect = pygame.Rect(self.collition_rect)
         self.ground_collition_rect.height = GROUND_COLLIDE_H
         self.ground_collition_rect.y = y + self.rect.height - GROUND_COLLIDE_H
+        ###-------------------------->>>>>>>>>>>>>>>>>>>>>
 
         self.is_jump = False
         self.is_fall = False
+        self.is_run = False
         self.is_shoot = False
         self.is_knife = False
 
@@ -148,6 +176,23 @@ class Player:
                 else:
                     self.move_x = -self.speed_walk
                     self.animation = self.walk_l
+
+    ### corregir
+    def run(self, direction):
+        if self.is_jump == False and self.is_fall == False:
+            if self.direction != direction or (
+                self.animation != self.run_r and self.animation != self.run_l
+            ):
+                self.frame = 0
+                self.direction = direction
+                if direction == DIRECTION_R:
+                    self.move_x = self.speed_walk
+                    self.animation = self.run_r
+                else:
+                    self.move_x = -self.speed_walk
+                    self.animation = self.run_l
+
+    ###
 
     def shoot(self, on_off=True):
         self.is_shoot = on_off
@@ -267,7 +312,7 @@ class Player:
             pygame.draw.rect(
                 screen, color=(255, 255, 0), rect=self.ground_collition_rect
             )
-
+        #######----------------------------------------------------------->>>>>>>>>>>>>>>>>>
         self.image = self.animation[self.frame]
         screen.blit(self.image, self.rect)
 
@@ -279,6 +324,14 @@ class Player:
 
         if not keys[pygame.K_LEFT] and keys[pygame.K_RIGHT]:
             self.walk(DIRECTION_R)
+
+        # Detecta si se presiona la tecla de flecha derecha y la tecla Mayús izquierda,
+        # y no se presiona la tecla de flecha izquierda, y llama al método run con dirección "Right".
+        if keys[pygame.K_RIGHT] and keys[pygame.K_LSHIFT] and not keys[pygame.K_LEFT]:
+            self.run(DIRECTION_R)
+        if keys[pygame.K_LEFT] and keys[pygame.K_LSHIFT] and not keys[pygame.K_RIGHT]:
+            self.run(DIRECTION_L)
+        ###################
 
         if (
             not keys[pygame.K_LEFT]
