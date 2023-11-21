@@ -91,7 +91,7 @@ class FormGameLevel1(Form):
             y=0,
             width=w,
             height=h,
-            path="Z_CLASE_23_inicio_NO_TOUCH/images/locations/set_bg_01/forest/all.png",
+            path="Z_CLASE_23_inicio_NO_TOUCH/images/back/depositphotos_56565763-stock-illustration-seamless-background-fabulous-night-forest (1).jpg",
         )
 
         self.player_1 = Player(
