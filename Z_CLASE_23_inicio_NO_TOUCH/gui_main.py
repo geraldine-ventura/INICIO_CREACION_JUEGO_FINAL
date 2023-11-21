@@ -67,12 +67,14 @@ while True:
             pygame.quit()
             sys.exit()
 
+    # Luego, se obtienen las teclas presionadas y el tiempo transcurrido desde la última llamada al método tick:
+
     keys = pygame.key.get_pressed()
     delta_ms = clock.tick(FPS)
 
     aux_form_active = Form.get_active()
-    if aux_form_active != None:
+    if aux_form_active != None:  # Verifica si hay una forma activa.
         aux_form_active.update(lista_eventos, keys, delta_ms)
-        aux_form_active.draw()
+        aux_form_active.draw()  # Dibuja la forma activa en la pantalla.
 
-    pygame.display.flip()
+    pygame.display.flip()  # actualiza la pantalla después de realizar cambios en la escena del juego

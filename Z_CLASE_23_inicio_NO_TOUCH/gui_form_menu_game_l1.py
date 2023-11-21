@@ -93,8 +93,7 @@ class FormGameLevel1(Form):
             height=h,
             path="Z_CLASE_23_inicio_NO_TOUCH/images/locations/set_bg_01/forest/all.png",
         )
-        # Z_CLASE_23_inicio_NO_TOUCH/background.py
-        # Z_CLASE_23_inicio_NO_TOUCH/images/locations/set_bg_01/forest/all.png
+
         self.player_1 = Player(
             x=0,
             y=400,

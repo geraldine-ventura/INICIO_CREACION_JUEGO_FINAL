@@ -4,7 +4,6 @@ from auxiliar import Auxiliar
 
 
 class Enemy:
-    # CLASE_23_inicio_juego/images/caracters/enemies/ork_sword/WALK/WALK_000.png
     def __init__(
         self,
         x,
