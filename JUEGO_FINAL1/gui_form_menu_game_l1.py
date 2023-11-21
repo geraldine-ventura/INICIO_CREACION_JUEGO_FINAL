@@ -22,7 +22,8 @@ class FormGameLevel1:
             y=0,
             width=w,
             height=h,
-            path="Z_CLASE_23_inicio_NO_TOUCH/images/locations/set_bg_01/forest/all.png",
+            # path="Z_CLASE_23_inicio_NO_TOUCH copy/images/back/game-platform-cartoon-forest-landscape-2d-ui-design-computer-mobile-bright-wood-with-green-trees-grass-lianas-background-with-arcade-elements-jumping-bonus-items-nature-locations_107791-4657 (1).jpg",
+            path="JUEGO_FINAL1/images/back/depositphotos_56565763-stock-illustration-seamless-background-fabulous-night-forest (1).jpg",
         )
 
         self.player_1 = Player(

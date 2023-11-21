@@ -12,7 +12,7 @@ imagen_fondo = pg.transform.scale(imagen_fondo, (ANCHO_VENTANA, ALTO_VENTANA))
 
 
 juego_ejecutandose = True
-player = Player(0, 0, frame_rate=70, speed_walk=15, speed_run=40)
+player = Player(0, 0, frame_rate=70, speed_walk=20, speed_run=40)
 # Inicia un bucle que se ejecutará mientras la variable juego_ejecutandose sea verdadera.
 while juego_ejecutandose:
     # print(delta_ms)

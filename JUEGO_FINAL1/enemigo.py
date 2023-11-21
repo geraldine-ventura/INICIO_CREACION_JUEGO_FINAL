@@ -19,26 +19,26 @@ class Enemy:
         interval_time_jump=100,
     ) -> None:
         self.walk_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/enemies/ork_sword/WALK/WALK_00{0}.png",
+            "JUEGO_FINAL1/images/caracters/enemies/ork_sword/WALK/WALK_00{0}.png",
             0,
             7,
             scale=p_scale,
         )
         self.walk_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/enemies/ork_sword/WALK/WALK_00{0}.png",
+            "JUEGO_FINAL1/images/caracters/enemies/ork_sword/WALK/WALK_00{0}.png",
             0,
             7,
             flip=True,
             scale=p_scale,
         )
         self.stay_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/enemies/ork_sword/IDLE/IDLE_00{0}.png",
+            "JUEGO_FINAL1/images/caracters/enemies/ork_sword/IDLE/IDLE_00{0}.png",
             0,
             7,
             scale=p_scale,
         )
         self.stay_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/enemies/ork_sword/IDLE/IDLE_00{0}.png",
+            "JUEGO_FINAL1/images/caracters/enemies/ork_sword/IDLE/IDLE_00{0}.png",
             0,
             7,
             flip=True,
