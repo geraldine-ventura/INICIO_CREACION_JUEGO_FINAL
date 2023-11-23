@@ -62,7 +62,7 @@ class FormGameLevel1(Form):
             color_background=None,
             color_border=None,
             image_background="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Buttons/Button_M_02.png",
-            on_click=self.on_click_shoot,
+            on_click=self.on_click_shoot,  # boton disparar enemys
             on_click_param="form_menu_B",
             text="SHOOT",
             font="Verdana",
@@ -176,6 +176,7 @@ class FormGameLevel1(Form):
             self.player_1, Player
         ):  # Verifica si self.player_1 es una instancia de Player
             for enemy_element in self.enemy_list:
+                # se crea una instancia de la clase Bullet para representar un proyectil o bala en el juego.
                 self.bullet_list.append(
                     Bullet(
                         enemy_element,
@@ -186,31 +187,13 @@ class FormGameLevel1(Form):
                         20,
                         path="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Bars/Bar_Segment05.png",
                         frame_rate_ms=100,
-                        move_rate_ms=20,
+                        move_rate_ms=50,
                         width=5,
                         height=5,
                     )
                 )
         else:
             print("Error: self.player_1 no es una instancia de la clase Player.")
-
-    """ def on_click_shoot(self, parametro):
-        for enemy_element in self.enemy_list:
-            self.bullet_list.append(
-                Bullet(
-                    enemy_element,
-                    enemy_element.rect.centerx,
-                    enemy_element.rect.centery,
-                    self.player_1.rect.centerx,
-                    self.player_1.rect.centery,
-                    20,
-                    path="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Bars/Bar_Segment05.png",
-                    frame_rate_ms=100,
-                    move_rate_ms=20,
-                    width=5,
-                    height=5,
-                )
-            ) """
 
     def update(self, lista_eventos, keys, delta_ms):
         for aux_widget in self.widget_list:

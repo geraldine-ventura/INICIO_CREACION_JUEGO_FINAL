@@ -122,17 +122,16 @@ class Enemy:
     # receive_shoot(Enemy):------------------>
     def receive_shoot(self, direction, enemy_shoot_rect):
         print("Función receive_shoot llamada")
-        print("ground_collition_rect:", self.ground_collition_rect)
         print("enemy_shoot_rect:", enemy_shoot_rect)
 
         if self.ground_collition_rect.colliderect(enemy_shoot_rect):
-            print("Collision with enemy detected! Changing animation to dead.")
+            print("Coalision con enemigo detectada!cambia de animacion dead")
             # Colisión con disparo del jugador, cambiar animación a dead
             if direction == DIRECTION_R:
                 self.animation = self.enemy_dead_r
             else:
                 self.animation = self.enemy_dead_l
-            self.reset_animation()  # Restablece la animación después de cambiarla
+            # self.reset_animation()  # Restablece la animación después de cambiarla
 
     def change_x(self, delta_x):
         self.rect.x += delta_x

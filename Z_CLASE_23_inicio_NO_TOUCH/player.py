@@ -185,13 +185,19 @@ class Player:
         print("player_rect:", player_rect)
 
         if self.ground_collition_rect.colliderect(player_rect):
-            print("Collision with player detected! Changing animation to dead.")
-            # Colisión con disparo del enemigo, cambiar animación a dead
+            print("Colisión con enemigo detectada! Cambio de animación a dead.")
             if direction == DIRECTION_R:
                 self.animation = self.player_dead_r
             else:
-                self.animation = self.player_dead_r
-            self.reset_animation()  # Restablece la animación después de cambiarla
+                self.animation = self.player_dead_l
+            self.reset_animation()  # Restablezco la animación después de cambiarla
+
+            self.lives -= 1
+            print("Vidas restantes:", self.lives)
+
+            if self.lives <= 0:
+                print("Game Over")
+                # dejo la logica para reiniciar el juego, mostrar un mensaje, etc.
 
     ### --------------------- !!------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -235,9 +241,9 @@ class Player:
                 self.frame = 0
                 self.is_shoot = True
                 if self.direction == DIRECTION_R:
-                    self.animation = self.player_dead_r
+                    self.animation = self.player_shoot_r
                 else:
-                    self.animation = self.player_dead_l
+                    self.animation = self.player_shoot_l
 
     def reset_animation(self):
         # Restablece la animación a la posición inicial (stay)

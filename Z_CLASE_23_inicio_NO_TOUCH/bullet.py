@@ -57,7 +57,7 @@ class Bullet:
             self.tiempo_transcurrido_move = 0
             self.change_x(self.move_x)
             self.change_y(self.move_y)
-            self.check_impact(plataform_list, enemy_list, player_1)
+            self.check_impact(enemy_list, player_1)
 
     def do_animation(self, delta_ms):
         self.tiempo_transcurrido_animation += delta_ms
@@ -65,32 +65,28 @@ class Bullet:
             self.tiempo_transcurrido_animation = 0
             pass
 
-    # En la clase Bullet:
-
-    def check_impact(
-        self, enemy_list, player_1, aux_enemy
-    ):  # aux es uno de los enemigos
+    def check_impact(self, enemy_list, player_1):
+        # Verifica la colisión con los enemigos
         if self.is_active:
-            for aux_element in enemy_list:
+            for enemy_element in enemy_list:
                 if (
-                    isinstance(aux_element, Enemy)
-                    and self.owner != aux_element
-                    and self.rect.colliderect(aux_element.rect)
+                    isinstance(enemy_element, Enemy)
+                    and self.owner != enemy_element
+                    and self.rect.colliderect(enemy_element.rect)
                 ):
                     print("IMPACTO ENEMY")
                     self.is_active = False
-                    aux_element.receive_shoot()
+                    enemy_element.receive_shoot()
 
-            # Verifica la colisión con el jugador
-            if (
-                isinstance(player_1, Player)
-                and self.owner != player_1
-                and self.rect.colliderect(player_1.rect)
-            ):
-                # if self.owner != player_1 and self.rect.colliderect(player_1.rect):
-                print("IMPACTO PLAYER")
-                self.is_active = False  # Desactiva la bala (self.is_active = False
-                player_1.receive_shoot()  #######self.player_1 es una instancia de la clase Player, no una lista
+        # Verifica la colisión con el jugador
+        if (
+            isinstance(player_1, Player)
+            and self.owner != player_1
+            and self.rect.colliderect(player_1.rect)
+        ):
+            print("IMPACTO PLAYER")
+            self.is_active = False
+            player_1.receive_shoot()
 
     def update(self, delta_ms, plataform_list, enemy_list, player_1):
         self.do_movement(delta_ms, plataform_list, enemy_list, player_1)
