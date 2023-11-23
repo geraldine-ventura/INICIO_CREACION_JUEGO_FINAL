@@ -77,15 +77,15 @@ class Player:
             scale=p_scale,
         )
 
-        ##-----------dead-path---------->
-        self.dead_r = Auxiliar.getSurfaceFromSeparateFiles(
+        ##-----------dead-player-path---------->
+        self.player_dead_r = Auxiliar.getSurfaceFromSeparateFiles(
             "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Dead ({0}).png",
             1,
             10,
             flip=False,
             scale=p_scale,
         )
-        self.dead_l = Auxiliar.getSurfaceFromSeparateFiles(
+        self.player_dead_l = Auxiliar.getSurfaceFromSeparateFiles(
             "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Dead ({0}).png",
             1,
             10,
@@ -93,9 +93,9 @@ class Player:
             scale=p_scale,
         )
 
-        ##---------shoot_path----------->
+        ##---------player_shoot_path----------->
 
-        self.shoot_r = Auxiliar.getSurfaceFromSeparateFiles(
+        self.player_shoot_r = Auxiliar.getSurfaceFromSeparateFiles(
             "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Shoot ({0}).png",
             1,
             3,
@@ -103,7 +103,7 @@ class Player:
             scale=p_scale,
             repeat_frame=2,
         )
-        self.shoot_l = Auxiliar.getSurfaceFromSeparateFiles(
+        self.player_shoot_l = Auxiliar.getSurfaceFromSeparateFiles(
             "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Shoot ({0}).png",
             1,
             3,
@@ -130,7 +130,7 @@ class Player:
             repeat_frame=1,
         )
 
-        # Inicializa las propiedades del jugador, como su posición (__move_x y __mov
+        # Inicializa las propiedades del jugador, como su posición (__move_x y __move_y)
         self.frame = 0
         self.lives = 5
         self.score = 0
@@ -165,7 +165,6 @@ class Player:
         self.is_run = False
         self.is_shoot = False
         self.is_knife = False
-        self.is_dead = False
 
         self.tiempo_transcurrido_animation = 0
         self.frame_rate_ms = frame_rate_ms
@@ -178,38 +177,21 @@ class Player:
         self.tiempo_last_jump = 0  # en base al tiempo transcurrido general
         self.interval_time_jump = interval_time_jump
 
-    ### CORREGIR COALICIONES DE "DEAD"!!----------verr no funka------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-    def dead(self, direction, enemy_shoot_rect):
-        print("Función dead llamada")
+    ### CORREGIR COALICIONES ---------verr no funka------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>
+    # receive_shoot(player):
+    def receive_shoot(self, direction, player_rect):
+        print("Función receive_shoot llamada")
         print("ground_collition_rect:", self.ground_collition_rect)
-        print("enemy_shoot_rect:", enemy_shoot_rect)
+        print("player_rect:", player_rect)
 
-        # Resto del código...
-
-        if self.ground_collition_rect.colliderect(enemy_shoot_rect):
-            print("Collision with enemy detected! Changing animation to shoot.")
-            # Colisión con disparo del enemigo, cambiar animación a shoot
+        if self.ground_collition_rect.colliderect(player_rect):
+            print("Collision with player detected! Changing animation to dead.")
+            # Colisión con disparo del enemigo, cambiar animación a dead
             if direction == DIRECTION_R:
-                self.animation = self.shoot_r
+                self.animation = self.player_dead_r
             else:
-                self.animation = self.shoot_l
+                self.animation = self.player_dead_r
             self.reset_animation()  # Restablece la animación después de cambiarla
-        else:
-            print("No collision with enemy. Changing animation to dead.")
-            # Sin colisión con disparo del enemigo, cambiar animación a dead
-            if self.direction != direction or (
-                self.animation != self.dead_r and self.animation != self.dead_l
-            ):
-                self.frame = 0
-                self.direction = direction
-                if direction == DIRECTION_R:
-                    self.move_x = self.speed_walk
-                    self.animation = self.dead_r
-                else:
-                    self.move_x = -self.speed_walk
-                    self.animation = self.dead_l
-                self.reset_animation()  # Restablece la animación después de cambiarla
 
     ### --------------------- !!------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -246,13 +228,16 @@ class Player:
     def shoot(self, on_off=True):
         self.is_shoot = on_off
         if on_off == True and self.is_jump == False and self.is_fall == False:
-            if self.animation != self.shoot_r and self.animation != self.shoot_l:
+            if (
+                self.animation != self.player_shoot_r
+                and self.animation != self.player_shoot_l
+            ):
                 self.frame = 0
                 self.is_shoot = True
                 if self.direction == DIRECTION_R:
-                    self.animation = self.shoot_r
+                    self.animation = self.player_dead_r
                 else:
-                    self.animation = self.shoot_l
+                    self.animation = self.player_dead_l
 
     def reset_animation(self):
         # Restablece la animación a la posición inicial (stay)

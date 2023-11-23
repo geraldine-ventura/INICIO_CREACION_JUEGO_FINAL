@@ -107,6 +107,9 @@ class FormGameLevel1(Form):
             p_scale=0.2,
             interval_time_jump=300,
         )
+        # lo defino como un atributo de la instancia (self.player_rect), en lugar de una variable local.
+        self.player_ground_collition_rect = self.player_1.ground_collition_rect
+        # self.player_ground_collition_rect = self.player_1.ground_collition_rect.copy()
 
         self.enemy_list = []
         self.enemy_list.append(
@@ -169,6 +172,29 @@ class FormGameLevel1(Form):
         self.set_active(parametro)
 
     def on_click_shoot(self, parametro):
+        if isinstance(
+            self.player_1, Player
+        ):  # Verifica si self.player_1 es una instancia de Player
+            for enemy_element in self.enemy_list:
+                self.bullet_list.append(
+                    Bullet(
+                        enemy_element,
+                        enemy_element.rect.centerx,
+                        enemy_element.rect.centery,
+                        self.player_1.rect.centerx,
+                        self.player_1.rect.centery,
+                        20,
+                        path="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Bars/Bar_Segment05.png",
+                        frame_rate_ms=100,
+                        move_rate_ms=20,
+                        width=5,
+                        height=5,
+                    )
+                )
+        else:
+            print("Error: self.player_1 no es una instancia de la clase Player.")
+
+    """ def on_click_shoot(self, parametro):
         for enemy_element in self.enemy_list:
             self.bullet_list.append(
                 Bullet(
@@ -184,7 +210,7 @@ class FormGameLevel1(Form):
                     width=5,
                     height=5,
                 )
-            )
+            ) """
 
     def update(self, lista_eventos, keys, delta_ms):
         for aux_widget in self.widget_list:
