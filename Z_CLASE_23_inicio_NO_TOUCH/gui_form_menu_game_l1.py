@@ -184,12 +184,12 @@ class FormGameLevel1(Form):
                         enemy_element.rect.centery,
                         self.player_1.rect.centerx,
                         self.player_1.rect.centery,
-                        20,
+                        10,
                         path="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Bars/Bar_Segment05.png",
-                        frame_rate_ms=100,
-                        move_rate_ms=50,
-                        width=5,
-                        height=5,
+                        frame_rate_ms=120,
+                        move_rate_ms=200,
+                        width=6,
+                        height=6,
                     )
                 )
         else:

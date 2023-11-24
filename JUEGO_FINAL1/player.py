@@ -1,4 +1,5 @@
 import pygame
+from bullet import Bullet
 from constantes import *
 from auxiliar import Auxiliar
 
@@ -19,42 +20,42 @@ class Player:
         interval_time_jump=100,
     ) -> None:
         self.stay_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Idle ({0}).png",
+            "JUEGO_FINAL1/images/caracters/players/cowgirl/Idle ({0}).png",
             1,
             10,
             flip=False,
             scale=p_scale,
         )
         self.stay_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Idle ({0}).png",
+            "JUEGO_FINAL1/images/caracters/players/cowgirl/Idle ({0}).png",
             1,
             10,
             flip=True,
             scale=p_scale,
         )
         self.jump_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Jump ({0}).png",
+            "JUEGO_FINAL1/images/caracters/players/cowgirl/Jump ({0}).png",
             1,
             10,
             flip=False,
             scale=p_scale,
         )
         self.jump_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Jump ({0}).png",
+            "JUEGO_FINAL1/images/caracters/players/cowgirl/Jump ({0}).png",
             1,
             10,
             flip=True,
             scale=p_scale,
         )
         self.walk_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Run ({0}).png",
+            "JUEGO_FINAL1/images/caracters/players/cowgirl/Run ({0}).png",
             1,
             8,
             flip=False,
             scale=p_scale,
         )
         self.walk_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Run ({0}).png",
+            "JUEGO_FINAL1/images/caracters/players/cowgirl/Run ({0}).png",
             1,
             8,
             flip=True,
@@ -63,58 +64,23 @@ class Player:
 
         ##-----------run-path---------->
         self.run_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Slide ({0}).png",
+            "JUEGO_FINAL1/images/caracters/players/cowgirl/Slide ({0}).png",
             1,
             5,
             flip=False,
             scale=p_scale,
         )
         self.run_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Slide ({0}).png",
+            "JUEGO_FINAL1/images/caracters/players/cowgirl/Slide ({0}).png",
             1,
             5,
             flip=True,
             scale=p_scale,
         )
 
-        ##-----------dead-path---------->
-        self.dead_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Dead ({0}).png",
-            1,
-            10,
-            flip=False,
-            scale=p_scale,
-        )
-        self.dead_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Dead ({0}).png",
-            1,
-            10,
-            flip=True,
-            scale=p_scale,
-        )
-
-        ##---------shoot_path----------->
-
-        self.shoot_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Shoot ({0}).png",
-            1,
-            3,
-            flip=False,
-            scale=p_scale,
-            repeat_frame=2,
-        )
-        self.shoot_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Shoot ({0}).png",
-            1,
-            3,
-            flip=True,
-            scale=p_scale,
-            repeat_frame=2,
-        )
-
         ##-----------knife-path---------->
         self.knife_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Melee ({0}).png",
+            "JUEGO_FINAL1/images/caracters/players/cowgirl/Melee ({0}).png",
             1,
             7,
             flip=False,
@@ -122,7 +88,7 @@ class Player:
             repeat_frame=1,
         )
         self.knife_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Melee ({0}).png",
+            "JUEGO_FINAL1/images/caracters/players/cowgirl/Melee ({0}).png",
             1,
             7,
             flip=True,
@@ -130,7 +96,42 @@ class Player:
             repeat_frame=1,
         )
 
-        # Inicializa las propiedades del jugador, como su posición (__move_x y __mov
+        # -----------dead-player-path---------->
+        self.player_dead_r = Auxiliar.getSurfaceFromSeparateFiles(
+            "JUEGO_FINAL1/images/caracters/players/cowgirl/Dead ({0}).png",
+            1,
+            10,
+            flip=False,
+            scale=p_scale,
+        )
+        self.player_dead_l = Auxiliar.getSurfaceFromSeparateFiles(
+            "JUEGO_FINAL1/images/caracters/players/cowgirl/Dead ({0}).png",
+            1,
+            10,
+            flip=True,
+            scale=p_scale,
+        )
+
+        ##---------player_shoot_path----------->
+
+        self.player_shoot_r = Auxiliar.getSurfaceFromSeparateFiles(
+            "JUEGO_FINAL1/images/caracters/players/cowgirl/Shoot ({0}).png",
+            1,
+            3,
+            flip=False,
+            scale=p_scale,
+            repeat_frame=2,
+        )
+        self.player_shoot_l = Auxiliar.getSurfaceFromSeparateFiles(
+            "JUEGO_FINAL1/images/caracters/players/cowgirl/Shoot ({0}).png",
+            1,
+            3,
+            flip=True,
+            scale=p_scale,
+            repeat_frame=2,
+        )
+
+        # Inicializa las propiedades del jugador, como su posición (__move_x y __move_y)
         self.frame = 0
         self.lives = 5
         self.score = 0
@@ -146,6 +147,7 @@ class Player:
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.bullet_list = []
         ###----------------COALISIONES---------->>>>>>>>>>>>>>>>>>>>>
         # está definiendo un rectángulo de colisión que es más estrecho que el rectángulo original
         # y está desplazado hacia la derecha en un tercio del ancho del rectángulo original.
@@ -165,7 +167,6 @@ class Player:
         self.is_run = False
         self.is_shoot = False
         self.is_knife = False
-        self.is_dead = False
 
         self.tiempo_transcurrido_animation = 0
         self.frame_rate_ms = frame_rate_ms
@@ -178,38 +179,27 @@ class Player:
         self.tiempo_last_jump = 0  # en base al tiempo transcurrido general
         self.interval_time_jump = interval_time_jump
 
-    ### CORREGIR COALICIONES DE "DEAD"!!----------verr no funka------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-    def dead(self, direction, enemy_shoot_rect):
-        print("Función dead llamada")
+    ### CORREGIR COALICIONES ---------verr no funka------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>
+    # receive_shoot(player):
+    def receive_shoot(self, direction, player_rect):
+        print("Función receive_shoot llamada")
         print("ground_collition_rect:", self.ground_collition_rect)
-        print("enemy_shoot_rect:", enemy_shoot_rect)
+        print("player_rect:", player_rect)
 
-        # Resto del código...
-
-        if self.ground_collition_rect.colliderect(enemy_shoot_rect):
-            print("Collision with enemy detected! Changing animation to shoot.")
-            # Colisión con disparo del enemigo, cambiar animación a shoot
+        if self.ground_collition_rect.colliderect(player_rect):
+            print("Colisión con enemigo detectada! Cambio de animación a dead.")
             if direction == DIRECTION_R:
-                self.animation = self.shoot_r
+                self.animation = self.player_dead_r
             else:
-                self.animation = self.shoot_l
-            self.reset_animation()  # Restablece la animación después de cambiarla
-        else:
-            print("No collision with enemy. Changing animation to dead.")
-            # Sin colisión con disparo del enemigo, cambiar animación a dead
-            if self.direction != direction or (
-                self.animation != self.dead_r and self.animation != self.dead_l
-            ):
-                self.frame = 0
-                self.direction = direction
-                if direction == DIRECTION_R:
-                    self.move_x = self.speed_walk
-                    self.animation = self.dead_r
-                else:
-                    self.move_x = -self.speed_walk
-                    self.animation = self.dead_l
-                self.reset_animation()  # Restablece la animación después de cambiarla
+                self.animation = self.player_dead_l
+            self.reset_animation()  # Restablezco la animación después de cambiarla
+
+            self.lives -= 1
+            print("Vidas restantes:", self.lives)
+
+            if self.lives <= 0:
+                print("Game Over")
+                # dejo la logica para reiniciar el juego, mostrar un mensaje, etc.
 
     ### --------------------- !!------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -246,13 +236,31 @@ class Player:
     def shoot(self, on_off=True):
         self.is_shoot = on_off
         if on_off == True and self.is_jump == False and self.is_fall == False:
-            if self.animation != self.shoot_r and self.animation != self.shoot_l:
+            bullet_1 = Bullet(
+                owner=self,
+                x_init=self.rect.right,
+                y_init=self.rect.center[1],
+                x_end=ANCHO_VENTANA,
+                y_end=self.rect.y,
+                speed=40,
+                path="JUEGO_FINAL1/images/caracters/players/warrior_woman_01/1_IDLE_000.png",
+                frame_rate_ms=100,
+                move_rate_ms=100,
+                width=5,
+                height=5,
+            )
+            self.bullet_list.append(bullet_1)
+
+            if (
+                self.animation != self.player_shoot_r
+                and self.animation != self.player_shoot_l
+            ):
                 self.frame = 0
                 self.is_shoot = True
                 if self.direction == DIRECTION_R:
-                    self.animation = self.shoot_r
+                    self.animation = self.player_shoot_r
                 else:
-                    self.animation = self.shoot_l
+                    self.animation = self.player_shoot_l
 
     def reset_animation(self):
         # Restablece la animación a la posición inicial (stay)

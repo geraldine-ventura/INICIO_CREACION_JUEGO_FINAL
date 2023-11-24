@@ -5,7 +5,8 @@ from player import Player
 from enemigo import Enemy
 from plataforma import Plataform
 from background import Background
-from bullet import Bullet
+
+""" from bullet import Bullet """
 
 
 class FormGameLevel1:
@@ -39,6 +40,9 @@ class FormGameLevel1:
             p_scale=0.2,
             interval_time_jump=300,
         )
+        # lo defino como un atributo de la instancia (self.player_rect), en lugar de una variable local.
+        self.player_ground_collition_rect = self.player_1.ground_collition_rect
+        # self.player_ground_collition_rect = self.player_1.ground_collition_rect.copy()
 
         self.enemy_list = []
         self.enemy_list.append(
@@ -95,19 +99,19 @@ class FormGameLevel1:
             Plataform(x=900, y=360, width=50, height=50, type=14)
         )
 
-        self.bullet_list = []
+    # self.bullet_list = []
 
-    def update(self, keys, delta_ms):
+    def update(self, lista_eventos, keys, delta_ms):
         for enemy_element in self.enemy_list:
             enemy_element.update(delta_ms, self.plataform_list)
+
+        for bullet in self.player_1.bullet_list:
+            bullet.update(delta_ms, self.plataform_list, self.enemy_list, self.player_1)
 
         self.player_1.events(delta_ms, keys)
         self.player_1.update(delta_ms, self.plataform_list)
 
     def draw(self, screen):
-        self.surface.fill(
-            (0, 0, 0)
-        )  # Llena la superficie con un color de fondo (puedes cambiarlo)
         self.static_background.draw(self.surface)
 
         for plataforma in self.plataform_list:
@@ -118,5 +122,7 @@ class FormGameLevel1:
 
         self.player_1.draw(self.surface)
 
-        # Dibuja la superficie en la pantalla
+        for bullet in self.player_1.bullet_list:
+            bullet.draw(self.surface)
+        # Dibujar la superficie en la pantalla
         screen.blit(self.surface, (0, 0))
