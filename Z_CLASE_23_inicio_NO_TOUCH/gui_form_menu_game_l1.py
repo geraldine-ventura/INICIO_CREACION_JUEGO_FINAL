@@ -20,7 +20,7 @@ class FormGameLevel1(Form):
             name, master_surface, x, y, w, h, color_background, color_border, active
         )
 
-        # --- GUI WIDGET ---
+        # *--- GUI WIDGET ---agregar a JUEGO_GAME_FINAL1
         self.boton1 = Button(
             master=self,
             x=0,
@@ -143,6 +143,7 @@ class FormGameLevel1(Form):
             )
         )
 
+        # *gregar mas plataformas a JUEGO_GAME_FINAL1
         self.plataform_list = []
         self.plataform_list.append(Plataform(x=400, y=500, width=50, height=50, type=0))
         self.plataform_list.append(Plataform(x=450, y=500, width=50, height=50, type=1))

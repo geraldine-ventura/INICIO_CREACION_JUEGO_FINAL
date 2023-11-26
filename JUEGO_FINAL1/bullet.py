@@ -1,7 +1,10 @@
 import pygame
 
-""" from player import Player """
-""" from enemigo import Enemy """
+""" # COMENTAR....
+from player import Player
+from enemigo import Enemy """
+
+# .....
 from constantes import *
 from auxiliar import Auxiliar
 
@@ -59,7 +62,8 @@ class Bullet:
             self.tiempo_transcurrido_move = 0
             self.change_x(self.move_x)
             self.change_y(self.move_y)
-            self.check_impact(enemy_list, player_1)
+
+        # self.check_impact(enemy_list, player_1)
 
     def do_animation(self, delta_ms):
         self.tiempo_transcurrido_animation += delta_ms
@@ -67,28 +71,31 @@ class Bullet:
             self.tiempo_transcurrido_animation = 0
             pass
 
+    """ # COMENTARR AMBOS.....se podria sacar isinstace para enemy_list y player_1, descoment self.check_impact
+    
     def check_impact(self, enemy_list, player_1):
         # Verifica la colisión con los enemigos
         if self.is_active:
-            """for enemy_element in enemy_list:
-            if (
-                isinstance(enemy_element, Enemy)
-                and self.owner != enemy_element
-                and self.rect.colliderect(enemy_element.rect)
-            ):
-                print("IMPACTO ENEMY")
-                self.is_active = False
-                enemy_element.receive_shoot()
-            """
+            for enemy_element in enemy_list:
+                if (
+                    isinstance(enemy_list, Enemy)
+                    and self.owner != enemy_element
+                    and self.rect.colliderect(enemy_element.rect)
+                ):
+                    print("IMPACTO ENEMY")
+                    self.is_active = False
+                    enemy_element.receive_shoot()
+
         # Verifica la colisión con el jugador
-        """ if (
+        if (
             isinstance(player_1, Player)
             and self.owner != player_1
             and self.rect.colliderect(player_1.rect)
         ):
             print("IMPACTO PLAYER")
             self.is_active = False
-            player_1.receive_shoot() """
+            player_1.receive_shoot()
+"""
 
     def update(self, delta_ms, plataform_list, enemy_list, player_1):
         self.do_movement(delta_ms, plataform_list, enemy_list, player_1)

@@ -148,6 +148,7 @@ class Player:
         self.rect.x = x
         self.rect.y = y
         self.bullet_list = []
+        
         ###----------------COALISIONES---------->>>>>>>>>>>>>>>>>>>>>
         # está definiendo un rectángulo de colisión que es más estrecho que el rectángulo original
         # y está desplazado hacia la derecha en un tercio del ancho del rectángulo original.
@@ -185,6 +186,7 @@ class Player:
         print("Función receive_shoot llamada")
         print("ground_collition_rect:", self.ground_collition_rect)
         print("player_rect:", player_rect)
+        # self.collition_rect = pygame.Rect(
 
         if self.ground_collition_rect.colliderect(player_rect):
             print("Colisión con enemigo detectada! Cambio de animación a dead.")
@@ -275,7 +277,7 @@ class Player:
         # self.reset_animation()
 
     def receive_knife(self):
-        # Puedes realizar acciones adicionales cuando el jugador recibe un ataque de cuchillo
+        # Puedo realizar acciones adicionales cuando el jugador recibe un ataque de cuchillo
         pass
 
     ####----------knife/acuchillar------>>>>>>>>>>>>
