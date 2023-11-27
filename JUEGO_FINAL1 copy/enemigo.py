@@ -126,17 +126,13 @@ class Enemy:
         self.intervalo_ataque = (
             3000  # Intervalo de tiempo entre ataques de cuchillo en milisegundos
         )
-        # ... va algo para aelf.is.active !!!!!!!!!!!!
+        # ... va algo para self.is.active !!!!!!!!!!!!
 
         self.is_active = (
             True  # Agregar el atributo is_active y configurarlo según tus necesidades
         )
 
-        self.intervalo_ataque = 3000
-
         self.knife_list = []
-
-        self.knife_list = []  ####
 
     def slash(self, on_off=True):
         if on_off and not self.is_dead:
@@ -157,34 +153,11 @@ class Enemy:
     ####
     def receive_knife(self):
         self.lives -= 1
-        # self.reset_animation()
+        # Verifica la colisión con el jugador solo si el enemigo está activo
 
-    # ... (otros métodos de la clase)
+        # receive_shoot(Enemy):------------------>
 
-    def check_impact(self, enemy_list, player_1):
-        # Verifica la colisión solo si el enemigo está activo
-        if self.is_active:
-            for enemy_element in enemy_list:
-                if (
-                    isinstance(enemy_element, Enemy)
-                    and self != enemy_element
-                    and self.rect.colliderect(enemy_element.rect)
-                ):
-                    print("IMPACTO ENEMY")
-                    self.is_active = False
-                    enemy_element.receive_shoot()
-
-            # Verifica la colisión con el jugador solo si el enemigo está activo
-            if self != player_1 and self.rect.colliderect(player_1.rect):
-                print("IMPACTO PLAYER")
-                self.is_active = False
-                player_1.receive_knife()
-
-    # receive_shoot(Enemy):------------------>
     def receive_shoot(self, direction, enemy_shoot_rect):
-        print("Función receive_shoot llamada")
-        print("enemy_shoot_rect:", enemy_shoot_rect)
-
         if self.ground_collition_rect.colliderect(enemy_shoot_rect):
             print("Colision con enemigo detectada!Cambia de animacion dead")
             if direction == DIRECTION_R:
@@ -193,7 +166,7 @@ class Enemy:
                 self.animation = self.enemy_dead_l
 
         self.lives -= 1
-        # self.reset_animation()  # Restablece la animación después de cambiarla
+        self.do_animation  # Restablece la animación después de cambiarla
 
     def change_x(self, delta_x):
         self.rect.x += delta_x

@@ -49,13 +49,19 @@ class Knife:
                 if self.owner != enemy_element and self.rect.colliderect(
                     enemy_element.rect
                 ):
-                    print("Impacto con enemigo detectado")
+                    print("slash con enemigo detectado ")
                     # Realiza las acciones correspondientes al impacto con el enemigo
 
             # Verifica la colisión con el jugador
             if self.owner != player_1 and self.rect.colliderect(player_1.rect):
-                print("Impacto con jugador detectado")
+                print("slash con jugador detectado ")
                 # Realiza las acciones correspondientes al impacto con el jugador
+                # Verifica la colisión con el jugador solo si el enemigo está activo
+            if self != player_1 and self.rect.colliderect(player_1.rect):
+                print("IMPACTO PLAYER por el enemigo\n(clase enemigo)")
+                self.is_active = False
+                player_1.knife()  ###ver fncion ....
+            # player_1.receive_shoot()  ###ver fncion ....
 
     def update(self, delta_ms, plataform_list, enemy_list, player_1):
         self.do_movement(delta_ms, plataform_list, enemy_list, player_1)

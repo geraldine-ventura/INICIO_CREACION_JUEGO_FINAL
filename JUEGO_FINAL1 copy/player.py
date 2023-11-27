@@ -180,28 +180,24 @@ class Player:
         self.tiempo_last_jump = 0  # en base al tiempo transcurrido general
         self.interval_time_jump = interval_time_jump
 
-    ### CORREGIR COALICIONES ---------verr no funka------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>
+    ### CORREGIR COALICIONES ---------verr no funka en consola------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>
     # receive_shoot(player):
     def receive_shoot(self, direction, player_rect):
-        print("Función receive_shoot llamada")
-        print("ground_collition_rect:", self.ground_collition_rect)
-        print("player_rect:", player_rect)
-        # self.collition_rect = pygame.Rect(
-
         if self.ground_collition_rect.colliderect(player_rect):
             print("Colisión con enemigo detectada! Cambio de animación a dead.")
             if direction == DIRECTION_R:
                 self.animation = self.player_dead_r
             else:
                 self.animation = self.player_dead_l
-            self.reset_animation()  # Restablezco la animación después de cambiarla
+            # self.reset_animation()  # Restablezco la animación después de cambiarla
 
             self.lives -= 1
             print("Vidas restantes:", self.lives)
 
             if self.lives <= 0:
                 print("Game Over")
-                # dejo la logica para reiniciar el juego, mostrar un mensaje, etc.
+
+        # dejo la logica para reiniciar el juego, mostrar un mensaje, etc.
 
     ### --------------------- !!------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -238,6 +234,7 @@ class Player:
     def shoot(self, on_off=True):
         self.is_shoot = on_off
         if on_off == True and self.is_jump == False and self.is_fall == False:
+            # creacion d ela bala "Bullet"
             bullet_1 = Bullet(
                 owner=self,
                 x_init=self.rect.right,
@@ -272,13 +269,20 @@ class Player:
             self.animation = self.stay_l
         self.frame = 0
 
-    def receive_shoot(self):
-        self.lives -= 1
-        # self.reset_animation()
-
     def receive_knife(self):
         self.lives -= 1
         # self.reset_animation()
+
+    def check_collision(self, enemy_shoot_rect):
+        # Realiza la detección de colisiones aquí
+        if self.ground_collition_rect.colliderect(enemy_shoot_rect):
+            print("Colisión con disparo del enemigo")
+            # Colisión detectada, llama al método dead
+            direction = DIRECTION_R  # Proporciona la dirección correcta según tu lógica
+            player_rect = (
+                self.ground_collition_rect
+            )  # Usa el rectángulo correcto del jugador
+            self.receive_shoot(self.direction, self.rect)
 
     ####----------knife/acuchillar------>>>>>>>>>>>>
     def knife(self, on_off=True):
@@ -386,13 +390,6 @@ class Player:
 
         if enemy_shoot_rect:
             self.check_collision(enemy_shoot_rect)
-
-    def check_collision(self, enemy_shoot_rect):
-        # Realiza la detección de colisiones aquí
-        if self.ground_collition_rect.colliderect(enemy_shoot_rect):
-            print("Colisión con disparo del enemigo")
-            # Colisión detectada, llama al método dead
-            self.receive_shoot()
 
     def draw(self, screen):
         if DEBUG:

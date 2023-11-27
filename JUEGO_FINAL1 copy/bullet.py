@@ -33,8 +33,8 @@ class Bullet:
         self.frame_rate_ms = frame_rate_ms
         self.move_rate_ms = move_rate_ms
         angle = math.atan2(y_end - y_init, x_end - x_init)
-        # Obtengo el ángulo en radianes
-        print("El ángulo en grados es:", int(angle * 180 / math.pi))
+
+        # print("El ángulo de disparo  en grados es:", int(angle * 180 / math.pi))
 
         self.move_x = math.cos(angle) * speed
         self.move_y = math.sin(angle) * speed
@@ -51,20 +51,13 @@ class Bullet:
         self.y = self.y + delta_y
         self.rect.y = int(self.y)
 
-    def do_movement(self, delta_ms, plataform_list, enemy_list, player_1):
-        self.tiempo_transcurrido_move += delta_ms
-        if self.tiempo_transcurrido_move >= self.move_rate_ms:
-            self.tiempo_transcurrido_move = 0
-            self.change_x(self.move_x)
-            self.change_y(self.move_y)
-
-            self.check_impact(enemy_list, player_1)
-
     def do_animation(self, delta_ms):
         self.tiempo_transcurrido_animation += delta_ms
         if self.tiempo_transcurrido_animation >= self.frame_rate_ms:
             self.tiempo_transcurrido_animation = 0
             pass
+
+    # ...
 
     def check_impact(self, enemy_list, player_1):
         # Verifica la colisión solo si la bala está activa
@@ -73,15 +66,24 @@ class Bullet:
                 if isinstance(enemy_element, Enemy) and self.rect.colliderect(
                     enemy_element.rect
                 ):
-                    print("Impacto con enemigo detectado")
+                    print("Impacto con enemigo detectado bullet")
                     self.is_active = False
                     enemy_element.receive_shoot(self.direction, self.rect)
 
             # Verifica la colisión con el jugador solo si la bala está activa
             if self.rect.colliderect(player_1.rect):
-                print("Impacto con jugador detectado")
+                print("Impacto con jugador detectado bullet")
                 self.is_active = False
-                player_1.receive_shoot()
+                player_1.receive_knife(self.direction, self.rect)
+
+    def do_movement(self, delta_ms, plataform_list, enemy_list, player_1):
+        self.tiempo_transcurrido_move += delta_ms
+        if self.tiempo_transcurrido_move >= self.move_rate_ms:
+            self.tiempo_transcurrido_move = 0
+            self.change_x(self.move_x)
+            self.change_y(self.move_y)
+
+            self.check_impact(enemy_list, player_1)
 
     def update(self, delta_ms, plataform_list, enemy_list, player_1):
         self.do_movement(delta_ms, plataform_list, enemy_list, player_1)

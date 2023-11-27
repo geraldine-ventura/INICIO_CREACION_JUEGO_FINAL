@@ -17,12 +17,13 @@ class FormGameLevel1:
     ):
         # Inicializa el atributo surface
         self.surface = pygame.Surface((w, h))
-        # --- GAME ELEMENTS ---
+        # --- GAME ELEMNTS ---
         self.static_background = Background(
             x=0,
             y=0,
             width=w,
             height=h,
+            # path="Z_CLASE_23_inicio_NO_TOUCH copy/images/back/game-platform-cartoon-forest-landscape-2d-ui-design-computer-mobile-bright-wood-with-green-trees-grass-lianas-background-with-arcade-elements-jumping-bonus-items-nature-locations_107791-4657 (1).jpg",
             path="JUEGO_FINAL1/images/back/depositphotos_56565763-stock-illustration-seamless-background-fabulous-night-forest (1).jpg",
         )
 
@@ -41,6 +42,7 @@ class FormGameLevel1:
         )
         # lo defino como un atributo de la instancia (self.player_rect), en lugar de una variable local.
         self.player_ground_collition_rect = self.player_1.ground_collition_rect
+        # self.player_ground_collition_rect = self.player_1.ground_collition_rect.copy()
 
         self.enemy_list = []
         self.enemy_list.append(
@@ -97,16 +99,16 @@ class FormGameLevel1:
             Plataform(x=900, y=360, width=50, height=50, type=14)
         )
 
+    # self.bullet_list = []
+
     def update(self, lista_eventos, keys, delta_ms):
         for enemy_element in self.enemy_list:
             enemy_element.update(
                 delta_ms, self.plataform_list, self.enemy_list, self.player_1
             )
-            enemy_element.check_impact(self.enemy_list, self.player_1)
 
         for bullet in self.player_1.bullet_list:
             bullet.update(delta_ms, self.plataform_list, self.enemy_list, self.player_1)
-            bullet.check_impact(self.enemy_list, self.player_1)
 
         self.player_1.events(delta_ms, keys)
         self.player_1.update(delta_ms, self.plataform_list)
