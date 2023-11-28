@@ -117,6 +117,7 @@ class Enemy:
         self.y_start_jump = 0
         self.jump_height = jump_height
 
+        # receive_shoot(Enemy):------------------>
         self.tiempo_transcurrido = 0
         self.tiempo_last_jump = 0  # en base al tiempo transcurrido general
         self.interval_time_jump = interval_time_jump
@@ -133,6 +134,10 @@ class Enemy:
         )
 
         self.knife_list = []
+
+    def get_shoot_rect(self):
+        # Devuelve el rectángulo de colisión del enemigo para detectar disparos
+        return self.collition_rect
 
     def slash(self, on_off=True):
         if on_off and not self.is_dead:
@@ -155,8 +160,7 @@ class Enemy:
         self.lives -= 1
         # Verifica la colisión con el jugador solo si el enemigo está activo
 
-        # receive_shoot(Enemy):------------------>
-
+    # receive_shoot(Enemy):------------------>
     def receive_shoot(self, direction, enemy_shoot_rect):
         if self.ground_collition_rect.colliderect(enemy_shoot_rect):
             print("Colision con enemigo detectada!Cambia de animacion dead")
@@ -166,6 +170,7 @@ class Enemy:
                 self.animation = self.enemy_dead_l
 
         self.lives -= 1
+        print(self.lives)
         self.do_animation  # Restablece la animación después de cambiarla
 
     def change_x(self, delta_x):
@@ -221,7 +226,7 @@ class Enemy:
             self.tiempo_transcurrido_animation = 0
             if self.frame < len(self.animation) - 1:
                 self.frame += 1
-                # print(self.frame)
+
             else:
                 self.frame = 0
 

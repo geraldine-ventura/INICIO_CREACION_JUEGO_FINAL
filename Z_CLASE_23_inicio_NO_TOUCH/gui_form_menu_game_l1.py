@@ -167,7 +167,7 @@ class FormGameLevel1(Form):
             Plataform(x=900, y=360, width=50, height=50, type=14)
         )
 
-        self.bullet_list = []
+        self.bullet_list = []  ####ver si comentar
 
     def on_click_boton1(self, parametro):
         self.set_active(parametro)

@@ -8,7 +8,6 @@ from gui_form_menu_B import FormMenuB
 from gui_form_menu_C import FormMenuC
 from gui_form_menu_game_l1 import FormGameLevel1
 
-
 flags = DOUBLEBUF
 screen = pygame.display.set_mode((ANCHO_VENTANA, ALTO_VENTANA), flags, 16)
 pygame.init()

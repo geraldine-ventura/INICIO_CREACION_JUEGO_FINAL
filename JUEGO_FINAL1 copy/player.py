@@ -181,7 +181,7 @@ class Player:
         self.interval_time_jump = interval_time_jump
 
     ### CORREGIR COALICIONES ---------verr no funka en consola------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>
-    # receive_shoot(player):
+
     def receive_shoot(self, direction, player_rect):
         if self.ground_collition_rect.colliderect(player_rect):
             print("Colisión con enemigo detectada! Cambio de animación a dead.")
@@ -191,13 +191,7 @@ class Player:
                 self.animation = self.player_dead_l
             # self.reset_animation()  # Restablezco la animación después de cambiarla
 
-            self.lives -= 1
-            print("Vidas restantes:", self.lives)
-
-            if self.lives <= 0:
-                print("Game Over")
-
-        # dejo la logica para reiniciar el juego, mostrar un mensaje, etc.
+    # dejo la logica para reiniciar el juego, mostrar un mensaje, etc.
 
     ### --------------------- !!------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -273,13 +267,22 @@ class Player:
         self.lives -= 1
         # self.reset_animation()
 
-    def check_collision(self, enemy_shoot_rect):
+    def check_collision(self, enemy_shoot_rect, player_1):
+        # Otras líneas de código...
+        # Supongamos que tienes valores adecuados para direction y player_rect
+        direction = "izquierda"  # Reemplaza esto con el valor correcto
+        player_rect = pygame.Rect(0, 0, 10, 10)  # Reemplaza esto con el valor correcto
+        self.receive_shoot(
+            direction, player_rect
+        )  # Corregido: usar el parámetro player_1
         # Realiza la detección de colisiones aquí
         if self.ground_collition_rect.colliderect(enemy_shoot_rect):
             print("Colisión con disparo del enemigo")
             # Colisión detectada, llama al método dead
-            direction = DIRECTION_R  # Proporciona la dirección correcta según tu lógica
-            player_rect = (
+            self.direction = (
+                DIRECTION_R  # Proporciona la dirección correcta según tu lógica
+            )
+            self.player_rect = (
                 self.ground_collition_rect
             )  # Usa el rectángulo correcto del jugador
             self.receive_shoot(self.direction, self.rect)
@@ -389,7 +392,7 @@ class Player:
         self.do_animation(delta_ms)
 
         if enemy_shoot_rect:
-            self.check_collision(enemy_shoot_rect)
+            self.check_collision(enemy_shoot_rect, self)
 
     def draw(self, screen):
         if DEBUG:

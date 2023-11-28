@@ -1,4 +1,5 @@
 import pygame
+from bullet import Bullet
 from constantes import *
 from auxiliar import Auxiliar
 
@@ -146,6 +147,7 @@ class Player:
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.bullet_list = []  # puedo crearlo en otro lado esta lista mas genrico
         ###----------------COALISIONES---------->>>>>>>>>>>>>>>>>>>>>
         # está definiendo un rectángulo de colisión que es más estrecho que el rectángulo original
         # y está desplazado hacia la derecha en un tercio del ancho del rectángulo original.
@@ -180,8 +182,6 @@ class Player:
     ### CORREGIR COALICIONES ---------verr no funka------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>
     # receive_shoot(player):
     def receive_shoot(self, direction, player_rect):
-        print("Función receive_shoot llamada")
-        print("ground_collition_rect:", self.ground_collition_rect)
         print("player_rect:", player_rect)
 
         if self.ground_collition_rect.colliderect(player_rect):
@@ -234,6 +234,21 @@ class Player:
     def shoot(self, on_off=True):
         self.is_shoot = on_off
         if on_off == True and self.is_jump == False and self.is_fall == False:
+            bullet_1 = Bullet(
+                owner=self,
+                x_init=self.rect.right,
+                y_init=self.rect.center[1],
+                x_end=ANCHO_VENTANA,
+                y_end=self.rect.y,
+                speed=40,
+                path="JUEGO_FINAL1/images/caracters/players/warrior_woman_01/1_IDLE_000.png",
+                frame_rate_ms=100,
+                move_rate_ms=100,
+                width=5,
+                height=5,
+            )
+            self.bullet_list.append(bullet_1)
+
             if (
                 self.animation != self.player_shoot_r
                 and self.animation != self.player_shoot_l
@@ -253,13 +268,10 @@ class Player:
             self.animation = self.stay_l
         self.frame = 0
 
-    def receive_shoot(self):
-        self.lives -= 1
-        # self.reset_animation()
-
     def receive_knife(self):
+        self.lives -= 1
         # Puedes realizar acciones adicionales cuando el jugador recibe un ataque de cuchillo
-        pass
+        # self.reset_animation()
 
     ####----------knife/acuchillar------>>>>>>>>>>>>
     def knife(self, on_off=True):
@@ -369,11 +381,23 @@ class Player:
             self.check_collision(enemy_shoot_rect)
 
     def check_collision(self, enemy_shoot_rect):
+        # Otras líneas de código...
+        # Supongamos que tienes valores adecuados para direction y player_rect
+        direction = "izquierda"  # Reemplaza esto con el valor correcto
+        player_rect = pygame.Rect(0, 0, 10, 10)  # Reemplaza esto con el valor correcto
+        self.receive_shoot(direction, player_rect)
+
         # Realiza la detección de colisiones aquí
         if self.ground_collition_rect.colliderect(enemy_shoot_rect):
             print("Colisión con disparo del enemigo")
             # Colisión detectada, llama al método dead
-            self.dead(DIRECTION_R, enemy_shoot_rect)
+            self.direction = (
+                DIRECTION_R  # Proporciona la dirección correcta según tu lógica
+            )
+            self.player_rect = (
+                self.ground_collition_rect
+            )  # Usa el rectángulo correcto del jugador
+            self.receive_shoot(self.direction, self.rect)
 
     def draw(self, screen):
         if DEBUG:

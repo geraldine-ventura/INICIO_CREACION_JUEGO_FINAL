@@ -41,9 +41,9 @@ class Knife:
             self.change_x(self.move_x)
             self.change_y(self.move_y)
 
-        # Verifica si enemy_list es iterable
+    """    # Verifica si enemy_list es iterable
         if hasattr(enemy_list, "__iter__"):
-            self.check_impact(enemy_list, player_1)
+            self.check_impact(enemy_list, player_1) """
 
     def check_impact(self, enemy_list, player_1):
         if self.is_active:

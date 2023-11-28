@@ -1,29 +1,22 @@
 import pygame
-from pygame.locals import *
 from constantes import *
-from player import *
-from enemigo import *
+from player import Player
+from enemigo import Enemy
 from plataforma import Plataform
 from background import Background
-
-""" from bullet import Bullet """
+from bullet import Bullet
 
 
 class FormGameLevel1:
-    def __init__(
-        self,
-        w,
-        h,
-    ):
+    def __init__(self, w, h):
         # Inicializa el atributo surface
         self.surface = pygame.Surface((w, h))
-        # --- GAME ELEMNTS ---
+        # --- GAME ELEMENTS ---
         self.static_background = Background(
             x=0,
             y=0,
             width=w,
             height=h,
-            # path="Z_CLASE_23_inicio_NO_TOUCH copy/images/back/game-platform-cartoon-forest-landscape-2d-ui-design-computer-mobile-bright-wood-with-green-trees-grass-lianas-background-with-arcade-elements-jumping-bonus-items-nature-locations_107791-4657 (1).jpg",
             path="JUEGO_FINAL1/images/back/depositphotos_56565763-stock-illustration-seamless-background-fabulous-night-forest (1).jpg",
         )
 
@@ -42,7 +35,6 @@ class FormGameLevel1:
         )
         # lo defino como un atributo de la instancia (self.player_rect), en lugar de una variable local.
         self.player_ground_collition_rect = self.player_1.ground_collition_rect
-        # self.player_ground_collition_rect = self.player_1.ground_collition_rect.copy()
 
         self.enemy_list = []
         self.enemy_list.append(
@@ -99,32 +91,51 @@ class FormGameLevel1:
             Plataform(x=900, y=360, width=50, height=50, type=14)
         )
 
-    # self.bullet_list = []
+    class FormGameLevel1:
+        # ... (otras definiciones de la clase)
 
-    def update(self, lista_eventos, keys, delta_ms):
-        for enemy_element in self.enemy_list:
-            enemy_element.update(
-                delta_ms, self.plataform_list, self.enemy_list, self.player_1
-            )
+        def game_over(self):
+            if self.player_1.lives <= 0:
+                print("Game Over")
+                # Cambiar la imagen del jugador a "dead"
+                self.player_1.animation = self.player_1.player_dead_r
+                self.player_1.reset_animation()  # Asegúrate de restablecer la animación después de cambiarla
+                # Puedes realizar acciones adicionales aquí, como reiniciar el nivel o mostrar un mensaje de game over.
 
-        for bullet in self.player_1.bullet_list:
-            bullet.update(delta_ms, self.plataform_list, self.enemy_list, self.player_1)
+        def update(self, lista_eventos, keys, delta_ms):
+            # Actualizar enemigos
+            for enemy_element in self.enemy_list:
+                enemy_element.update(
+                    delta_ms, self.plataform_list, self.enemy_list, self.player_1
+                )
+                self.player_1.update(
+                    delta_ms,
+                    self.plataform_list,
+                    enemy_shoot_rect=enemy_element.get_shoot_rect(),
+                )
 
-        self.player_1.events(delta_ms, keys)
-        self.player_1.update(delta_ms, self.plataform_list)
+            # Verificar impacto con balas del jugador
+            bullets_to_remove = []
+            for bullet in self.player_1.bullet_list:
+                for enemy_element in self.enemy_list:
+                    if bullet.check_impact(enemy_element, self.player_1):
+                        # Marcar la bala para eliminarla después de salir del bucle
+                        bullets_to_remove.append(bullet)
+                        # Resto del código para manejar el impacto
 
-    def draw(self, screen):
-        self.static_background.draw(self.surface)
+            # Eliminar balas marcadas para su eliminación
+            for bullet in bullets_to_remove:
+                self.player_1.bullet_list.remove(bullet)
 
-        for plataforma in self.plataform_list:
-            plataforma.draw(self.surface)
+            # Actualizar balas del jugador
+            for bullet in self.player_1.bullet_list:
+                bullet.update(
+                    delta_ms, self.plataform_list, self.enemy_list, self.player_1
+                )
 
-        for enemy_element in self.enemy_list:
-            enemy_element.draw(self.surface)
+            # Actualizar jugador
+            self.player_1.events(delta_ms, keys)
+            self.player_1.update(delta_ms, self.enemy_list, self.player_1)
 
-        self.player_1.draw(self.surface)
-
-        for bullet in self.player_1.bullet_list:
-            bullet.draw(self.surface)
-        # Dibujar la superficie en la pantalla
-        screen.blit(self.surface, (0, 0))
+            # Llamar a la función game_over si las vidas llegan a cero
+            self.game_over()

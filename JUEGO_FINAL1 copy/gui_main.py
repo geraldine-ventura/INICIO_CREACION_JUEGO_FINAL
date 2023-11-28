@@ -4,6 +4,7 @@ from pygame.locals import *
 from constantes import *
 from gui_form_menu_game_l1 import FormGameLevel1  # Importa tu módulo
 
+
 # Inicialización de Pygame y otras configuraciones
 pygame.init()
 
@@ -15,7 +16,7 @@ pygame.display.set_caption("Tu juego")
 # Crear una instancia de la clase FormGameLevel1
 game_level_1 = FormGameLevel1(w=ANCHO_VENTANA, h=ALTO_VENTANA)
 
-
+# Bucle principal
 while True:
     # Obtener eventos, teclas, etc.
     lista_eventos = pygame.event.get()
@@ -30,7 +31,6 @@ while True:
     # Actualizar lógica del juego
     game_level_1.update(lista_eventos, keys, delta_ms)
 
-    # Dibujar en la pantalla
     game_level_1.draw(screen)
 
     # Renderizar/dibujar en la pantalla

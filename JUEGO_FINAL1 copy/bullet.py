@@ -2,6 +2,7 @@ import pygame
 from constantes import *
 from auxiliar import Auxiliar
 from enemigo import Enemy
+from player import *
 import math
 
 
@@ -62,19 +63,22 @@ class Bullet:
     def check_impact(self, enemy_list, player_1):
         # Verifica la colisión solo si la bala está activa
         if self.is_active:
-            for enemy_element in enemy_list:
-                if isinstance(enemy_element, Enemy) and self.rect.colliderect(
-                    enemy_element.rect
-                ):
-                    print("Impacto con enemigo detectado bullet")
-                    self.is_active = False
-                    enemy_element.receive_shoot(self.direction, self.rect)
+            if hasattr(enemy_list, "__iter__"):  # Verifica si es iterable
+                for enemy_element in enemy_list:
+                    if isinstance(enemy_element, Enemy) and self.rect.colliderect(
+                        enemy_element.rect
+                    ):
+                        print("Impacto bullet para enemigo detectado ")
+                        self.is_active = False
+                        enemy_element.receive_shoot(self.direction, self.rect)
+            else:
+                print("Error: enemy_list no es iterable")
 
             # Verifica la colisión con el jugador solo si la bala está activa
             if self.rect.colliderect(player_1.rect):
-                print("Impacto con jugador detectado bullet")
+                print("Impacto bullet para jugador detectado ")
                 self.is_active = False
-                player_1.receive_knife(self.direction, self.rect)
+                player_1.receive_shoot(player_1.direction, player_1.rect)
 
     def do_movement(self, delta_ms, plataform_list, enemy_list, player_1):
         self.tiempo_transcurrido_move += delta_ms

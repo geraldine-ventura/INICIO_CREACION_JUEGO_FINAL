@@ -1,4 +1,5 @@
-from player import *
+# from player import
+import pygame
 from constantes import *
 from auxiliar import Auxiliar
 
