@@ -121,14 +121,14 @@ class Enemy:
         self.interval_time_jump = interval_time_jump
 
     # receive_shoot(Enemy):------------------>
-    def receive_shoot(self, direction, enemy_shoot_rect):
+    def receive_shoot(self, enemy_shoot_rect):
         print("Función receive_shoot llamada")
         print("enemy_shoot_rect:", enemy_shoot_rect)
 
         if self.ground_collition_rect.colliderect(enemy_shoot_rect):
             print("Coalision con enemigo detectada!cambia de animacion dead")
             # Colisión con disparo del jugador, cambiar animación a dead
-            if direction == DIRECTION_R:
+            if self.direction == DIRECTION_R:
                 self.animation = self.enemy_dead_r
             else:
                 self.animation = self.enemy_dead_l
