@@ -2,6 +2,7 @@
 import pygame
 from constantes import *
 from auxiliar import Auxiliar
+from bullet import *
 
 
 class Enemy:
@@ -161,21 +162,25 @@ class Enemy:
             )
             self.reset_animation()  # Restablezco la animación después de cambiarla
 
-    # receive_shoot(Enemy):------------------>
-    def receive_shoot(self, enemy_shoot_rect):
-        print("Función receive_shoot llamada")
-        print("enemy_shoot_rect:", enemy_shoot_rect)
+    # ...
+    def receive_shoot(self, enemy_shoot_rect=None):
+        if enemy_shoot_rect is not None:
+            print("Función receive_shoot llamada")
+            print("enemy_shoot_rect:", enemy_shoot_rect)
 
-        if self.ground_collition_rect.colliderect(enemy_shoot_rect):
-            print("Coalision con enemigo detectada!cambia de animacion dead")
-            # Colisión con disparo del jugador, cambiar animación a dead
-            if self.direction == DIRECTION_R:
-                self.animation = self.enemy_dead_r
-            else:
-                self.animation = self.enemy_dead_l
-            # self.reset_animation()  # Restablece la animación después de cambiarla
+            if self.ground_collition_rect.colliderect(enemy_shoot_rect):
+                print("Colisión con enemigo detectada! Cambia de animación a dead.")
+                # Colisión con disparo del jugador, cambiar animación a dead
+                if self.direction == DIRECTION_R:
+                    self.animation = self.enemy_dead_r
+                else:
+                    self.animation = self.enemy_dead_l
+                # Restablece la animación después de cambiarla
+                self.reset_animation()
 
-            self.enemy_list = []
+                # Realiza otras acciones necesarias en caso de colisión
+        else:
+            self.lives -= 1
 
     def do_movement(self, delta_ms, plataform_list):
         self.tiempo_transcurrido_move += delta_ms
@@ -239,6 +244,3 @@ class Enemy:
 
         self.image = self.animation[self.frame]
         screen.blit(self.image, self.rect)
-
-    def receive_shoot(self):
-        self.lives -= 1

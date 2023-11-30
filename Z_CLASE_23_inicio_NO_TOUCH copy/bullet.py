@@ -20,9 +20,11 @@ class Bullet:
         path,
         frame_rate_ms,
         move_rate_ms,
+        direction,
         width=5,
         height=5,
     ) -> None:
+        self.direction = direction
         self.tiempo_transcurrido_move = 0
         self.tiempo_transcurrido_animation = 0
         self.image = pygame.image.load(path).convert()
@@ -61,6 +63,19 @@ class Bullet:
             self.change_y(self.move_y)
             self.check_impact(enemy_list, player_1)
 
+    """ # -----------------------new
+
+        if not self.is_on_plataform(plataform_list):
+            if self.move_y == 0:
+                self.is_fall = True
+                self.change_y(self.gravity)
+
+                # Itera sobre la lista de enemigos y llama al método check_jump_collision después de cambiar la posición
+                for enemy in enemy_list:
+                    if self.is_on_plataform(plataform_list):
+                        enemy.check_jump_collision(self.collition_rect)
+        # -----------------------new """
+
     def do_animation(self, delta_ms):
         self.tiempo_transcurrido_animation += delta_ms
         if self.tiempo_transcurrido_animation >= self.frame_rate_ms:
@@ -77,7 +92,7 @@ class Bullet:
                     ):
                         print("Impacto bullet para enemigo detectado ")
                         self.is_active = False
-                        enemy_element.receive_shoot(self.direction, self.rect)
+                        enemy_element.receive_shoot(self.rect)
             else:
                 print("Error: enemy_list no es iterable")
 

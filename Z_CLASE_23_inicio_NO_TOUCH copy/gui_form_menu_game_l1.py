@@ -10,6 +10,7 @@ from enemigo import Enemy
 from plataforma import Plataform
 from background import Background
 from bullet import Bullet
+from botin import Fruta
 
 
 class FormGameLevel1(Form):
@@ -20,7 +21,26 @@ class FormGameLevel1(Form):
             name, master_surface, x, y, w, h, color_background, color_border, active
         )
 
-        # *--- GUI WIDGET ---agregar a JUEGO_GAME_FINAL1
+        self.player_1 = Player(
+            x=x,
+            y=y,
+            width=40,
+            height=40,
+            speed_walk=20,
+            speed_run=20,
+            gravity=20,
+            jump_power=20,
+            frame_rate_ms=10,
+            move_rate_ms=1000,
+            jump_height=10,
+            # p_scale: int = 1,
+            # interval_time_jump: int = 100
+            p_scale=1,
+            interval_time_jump=100,
+        )
+
+        # player_1 ver para corregir
+
         self.boton1 = Button(
             master=self,
             x=0,
@@ -85,7 +105,7 @@ class FormGameLevel1(Form):
         )
         self.widget_list = [self.boton1, self.boton2, self.pb_lives, self.boton_shoot]
 
-        # --- GAME ELEMNTS ---
+        # --- GAME ELEMENTS ---
         self.static_background = Background(
             x=0,
             y=0,
@@ -101,15 +121,17 @@ class FormGameLevel1(Form):
             speed_run=12,
             gravity=14,
             jump_power=30,
-            frame_rate_ms=100,
-            move_rate_ms=50,
+            frame_rate_ms=150,
+            move_rate_ms=250,
             jump_height=140,
             p_scale=0.2,
             interval_time_jump=300,
+            width=20,
+            height=20,
         )
+
         # lo defino como un atributo de la instancia (self.player_rect), en lugar de una variable local.
         self.player_ground_collition_rect = self.player_1.ground_collition_rect
-        # self.player_ground_collition_rect = self.player_1.ground_collition_rect.copy()
 
         self.enemy_list = []
         self.enemy_list.append(
@@ -127,23 +149,7 @@ class FormGameLevel1(Form):
                 interval_time_jump=300,
             )
         )
-        self.enemy_list.append(
-            Enemy(
-                x=900,
-                y=400,
-                speed_walk=6,
-                speed_run=5,
-                gravity=14,
-                jump_power=30,
-                frame_rate_ms=150,
-                move_rate_ms=50,
-                jump_height=140,
-                p_scale=0.08,
-                interval_time_jump=300,
-            )
-        )
-        # En algún lugar de tu bucle principal donde actualizas el juego:
-        delta_ms = pygame.time.Clock().tick(60)  # Suponiendo 60 fotogramas
+
         # *gregar mas plataformas a JUEGO_GAME_FINAL1
         self.plataform_list = []
         self.plataform_list.append(Plataform(x=400, y=500, width=50, height=50, type=0))
@@ -170,12 +176,6 @@ class FormGameLevel1(Form):
 
         self.bullet_list = []  ####ver si comentar
 
-        self.player_1.do_movement(delta_ms, self.plataform_list, self.enemy_list)
-        # Supongamos que delta_ms se obtiene de alguna manera, por ejemplo, midiendo el tiempo entre fotogramas
-
-        # Luego, en algún punto donde llamas a do_movement:
-        self.player_1.do_movement(delta_ms, self.plataform_list, self.enemy_list)
-
     def on_click_boton1(self, parametro):
         self.set_active(parametro)
 
@@ -198,6 +198,7 @@ class FormGameLevel1(Form):
                         move_rate_ms=200,
                         width=6,
                         height=6,
+                        direction="left",
                     )
                 )
         else:
@@ -211,7 +212,6 @@ class FormGameLevel1(Form):
             bullet_element.update(
                 delta_ms, self.plataform_list, self.enemy_list, self.player_1
             )
-        # enemy.check_jump_collision(self.player_1.head_collition_rect)
 
         for enemy_element in self.enemy_list:
             enemy_element.update(delta_ms, self.plataform_list)
@@ -220,15 +220,6 @@ class FormGameLevel1(Form):
         self.player_1.update(delta_ms, self.plataform_list)
 
         self.pb_lives.value = self.player_1.lives
-
-        # -----------------------------------------------------------------------------------verrr
-        # Actualiza a los enemigos después de actualizar al jugador
-
-        for enemy in self.enemy_list:
-            enemy.do_movement(delta_ms, self.plataform_list)
-            # enemy.check_jump_collision(self.player_1.head_collition_rect)
-            enemy.check_jump_collision(self.player_1.collition_rect)
-        # -----------------------------------------------------------------------------------
 
     def draw(self):
         super().draw()

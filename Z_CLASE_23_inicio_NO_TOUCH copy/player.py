@@ -17,9 +17,14 @@ class Player:
         frame_rate_ms,
         move_rate_ms,
         jump_height,
+        height,
+        width,
         p_scale=1,
         interval_time_jump=100,
     ) -> None:
+        self.width = width
+        self.height = height
+        # -------------------------------------------------------------
         self.stay_r = Auxiliar.getSurfaceFromSeparateFiles(
             "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Idle ({0}).png",
             1,
@@ -131,7 +136,8 @@ class Player:
             scale=p_scale,
             repeat_frame=1,
         )
-
+        self.width = 20
+        self.height = 20
         # Inicializa las propiedades del jugador, como su posición (__move_x y __move_y)
         self.frame = 0
         self.lives = 5
@@ -148,9 +154,11 @@ class Player:
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+
         self.bullet_list = []  # puedo crearlo en otro lado esta lista mas genrico
 
         self.enemy_list = []
+
         ###----------------COALISIONES---------->>>>>>>>>>>>>>>>>>>>>
         # está definiendo un rectángulo de colisión que es más estrecho que el rectángulo original
         # y está desplazado hacia la derecha en un tercio del ancho del rectángulo original.
@@ -181,6 +189,15 @@ class Player:
         self.tiempo_transcurrido = 0
         self.tiempo_last_jump = 0  # en base al tiempo transcurrido general
         self.interval_time_jump = interval_time_jump
+        # Inicialización de la clase Jugador
+        self.frutas_recolectadas = 0  # mod botin.py
+
+    # --------------------------------botin-----------------------
+    def check_colision_frutas(self, frutas_group):
+        for fruta in frutas_group:
+            if pygame.sprite.collide_rect(self, fruta):
+                self.frutas_recolectadas += 1
+                fruta.kill()  # Elimina la fruta del juego al ser rec
 
     ### CORREGIR COALICIONES ---------verr no funka------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -189,7 +206,7 @@ class Player:
 
         print("player_rect:", player_rect)
 
-        if self.ground_collition_rect.colliderect(player_rect):
+        if self.collition_rect.colliderect(player_rect):
             print("Colisión con enemigo detectada! Cambio de animación a dead.")
             if direction == DIRECTION_R:
                 self.animation = self.player_dead_r
@@ -203,72 +220,6 @@ class Player:
             if self.lives <= 0:
                 print("Game Over")
                 # dejo la logica para reiniciar el juego, mostrar un mensaje, etc.
-
-    ### --------------------- !!------>------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    """     # ≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤nuevo # ≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤nuevo       
-
-    def crate_bullet(self):
-        if self.is_looking_ritght:
-            direcion = self.rect.righ
-            direcion_str = "right"
-        else:
-            direcion = self.rect.left
-            direcion_str = "left"
-            return kiBlast(
-                direcion, self.rect.centery, direcion_str, True
-            )  # explosion de ki
-
-    def cooldown_ready_to_action(self) -> bool:
-        curent_time = pygame.time.get_ticks()
-        return curent_time - self.ki_blast_time >= self.ki_blast_cooldown  # enfriarse
-
-    def recharge(self):
-        if not self.ready_to_attack:
-            if self.cooldown_redy_to_action():
-                self.ready_to_atack = True
-
-    def charge_ki(self, charge: bool):
-        if charge:
-            if not self.is_charging and charge:
-                if (
-                    self.actual_animation != self.charge_l
-                    and self.actual_animation != self.charge_r
-                ):
-                    self.is_charging = True
-
-                    if self.is_looking_rigth:
-                        self.cambiar_animacion(self.charge_r)
-                        self.sound_player("charge_ssj1", "play")
-                    else:
-                        self.cambiar_animacion(self.charge_l)
-                        self.move_x = 0
-                        self.move_y = 0
-
-    def shoot_ki_blast(self):  # dispara laser
-       if self.actual_animation != self._ki_blast_l and self.actual_animation != self.ki_blast_r:
-        if self.is_looking_rigth:
-            self.cambiar_animacion(self.shoot_ki_blast_r)
-        else
-            self.cambiar_animacion(self.shoot_ki_blast_l)
-
-        if self.cooldown_redy_to_action():
-            print("!aaaaaaa!!!")
-
-        self.sound_player("ki_blast", "play")
-        self.bullet_group.add(self.create_bullet())
-        # self.ready_to_atack= False
-        self.ki_blast_time = pygame.time.get_ticks
-
-        if (
-            self.actual_animation != self._ki_blast_l
-            and self.actual_animation != self.ki_blast_r
-        ):
-            if self.is_looking_rigth:
-                self.cambiar_animacion(self.shoot_ki_blast_r)
-            else:
-                self.cambiar_animacion(self.shoot_ki_blast_l)
-
-    # ≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤nuevo # ≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤≤ """
 
     def walk(self, direction):
         if self.is_jump == False and self.is_fall == False:
@@ -305,6 +256,7 @@ class Player:
         if on_off == True and self.is_jump == False and self.is_fall == False:
             bullet_1 = Bullet(
                 owner=self,
+                direction=self.direction,  # Agrega esta línea para proporcionar la direccion
                 x_init=self.rect.right,
                 y_init=self.rect.center[1],
                 x_end=ANCHO_VENTANA,
@@ -409,6 +361,30 @@ class Player:
             self.change_x(self.move_x)
             self.change_y(self.move_y)
 
+            if not self.is_on_plataform(plataform_list):
+                if self.move_y == 0:
+                    self.is_fall = True
+                    self.change_y(self.gravity)
+
+            # Itera sobre la lista de enemigos y llama al método check_jump_collision después de cambiar la posición
+            for enemy in enemy_list:
+                if self.is_on_plataform(
+                    plataform_list
+                ):  # Asegúrate de que el jugador esté en una plataforma antes de llamar a check_jump_collision
+                    enemy.check_jump_collision(self.collition_rect)
+
+    #################revisar so_momwnt para que mi personaje se pueda mover
+    def do_movement(self, delta_ms, plataform_list, enemy_list):
+        self.tiempo_transcurrido_move += delta_ms
+        if self.tiempo_transcurrido_move >= self.move_rate_ms:
+            self.tiempo_transcurrido_move = 0
+
+            if abs(self.y_start_jump - self.rect.y) > self.jump_height and self.is_jump:
+                self.move_y = 0
+
+            self.change_x(self.move_x)
+            self.change_y(self.move_y)
+
         if not self.is_on_plataform(plataform_list):
             if self.move_y == 0:
                 self.is_fall = True
@@ -422,6 +398,7 @@ class Player:
                 self.jump(False)
             self.is_fall = False
 
+    #################--------------------------------------------------->>>>>>>
     def is_on_plataform(self, plataform_list):
         retorno = False
 
@@ -449,7 +426,11 @@ class Player:
     def update(self, delta_ms, plataform_list, enemy_shoot_rect=None):
         self.do_movement(delta_ms, plataform_list, self.enemy_list)
         self.do_animation(delta_ms)
+        # ----------------------------------------botin----------------------------
+        # Suponiendo que frutas_group es una referencia al grupo de frutas
+        # self.check_colision_frutas(frutas_group)
 
+        # ------------------------------------------------------------------------
         if enemy_shoot_rect:
             self.check_collision(enemy_shoot_rect)
 
@@ -457,7 +438,7 @@ class Player:
         # Otras líneas de código...
         # Supongamos que tienes valores adecuados para direction y player_rect
         direction = "izquierda"  # Reemplaza esto con el valor correcto
-        player_rect = pygame.Rect(0, 0, 10, 10)  # Reemplaza esto con el valor correcto
+        player_rect = self.ground_collition_rect  # Usar el rectángulo real del jugador
         self.receive_shoot(direction, player_rect)
 
         # Realiza la detección de colisiones aquí
@@ -537,3 +518,10 @@ class Player:
             self.knife()
 
             """ self.reset_animation()  # Resetea la animación después de realizar el ataque con cuchillo """
+
+        """if keys[pygame.K_s] and not keys[pygame.K_a]:
+            self.shoot()
+
+        if keys[pygame.K_a] and not keys[pygame.K_s]:
+            self.knife()
+        """
