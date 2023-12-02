@@ -5,6 +5,7 @@ from gui_form import Form
 from gui_button import Button
 from gui_textbox import TextBox
 from gui_progressbar import ProgressBar
+
 from player import Player
 from enemigo import Enemy
 from plataforma import Plataform
@@ -29,36 +30,19 @@ class FormGameLevel1(Form):
         enemy_group,
     ):
         super().__init__(
-            name, master_surface, x, y, w, h, color_background, color_border, active
+            name,
+            master_surface,
+            x,
+            y,
+            w,
+            h,
+            color_background,
+            color_border,
+            active,
         )
         self.enemy_group = enemy_group
-        self.bullet_group = pygame.sprite.Group()  # Inicializa el grupo de balas
 
         # Resto de tu código...
-
-    def on_click_shoot(self, parametro):
-        for enemy_element in self.enemy_group:
-            bullet = Bullet(
-                enemy_element,
-                enemy_element.rect.centerx,
-                enemy_element.rect.centery,
-                self.player_1.rect.centerx,
-                self.player_1.rect.centery,
-                10,
-                path="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Bars/Bar_Segment05.png",
-                frame_rate_ms=80,
-                move_rate_ms=50,
-                width=6,
-                height=6,
-                direction="left",
-            )
-            self.bullet_group.add(bullet)  # Agrega la bala al grupo de balas
-
-    def update(self, lista_eventos, keys, delta_ms):
-        # Resto de tu código...
-        self.bullet_group.update(
-            delta_ms, self.plataform_list, self.enemy_group, self.player_1
-        )
 
         self.player_1 = Player(
             x=0,
@@ -149,8 +133,8 @@ class FormGameLevel1(Form):
         self.static_background = Background(
             x=0,
             y=0,
-            width=ANCHO_VENTANA,
-            height=ALTO_VENTANA,  # ver
+            width=w,
+            height=h,  # ver
             path="Z_CLASE_23_inicio_NO_TOUCH/images/back/depositphotos_56565763-stock-illustration-seamless-background-fabulous-night-forest (1).jpg",
         )
 
@@ -250,21 +234,19 @@ class FormGameLevel1(Form):
                 height=6,
                 direction="left",
             )
-            self.bullet_group.add(bullet)
+            """ self.bullet_group.add(bullet)  #!! """
 
-    def render(self):  # extra para buscar sol de self.widget_list
+    def render(self):  # extra para buscar soluci de self.widget_list
         if self.color_background is not None:
             self.surface.fill(self.color_background)
 
     def update(self, lista_eventos, keys, delta_ms):
         for aux_widget in self.widget_list:
             aux_widget.update(lista_eventos)
-            print(type(aux_widget))
-            print(id(self))
 
-        self.bullet_group.update(
+        """ self.bullet_group.update(
             delta_ms, self.plataform_list, self.enemy_group, self.player_1
-        )
+        ) """
 
         for enemy_element in self.enemy_group:
             enemy_element.update(delta_ms, self.plataform_list)
@@ -290,6 +272,9 @@ class FormGameLevel1(Form):
             enemy_element.draw(self.surface)
 
         self.player_1.draw(self.surface)
+
+        """ for bullet_element in self.bullet_group:
+            bullet_element.draw(self.surface) """
 
 
 # Detener sonidos al salir del juego

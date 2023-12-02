@@ -6,7 +6,7 @@ from gui_form import Form
 from gui_form_menu_A import FormMenuA
 from gui_form_menu_B import FormMenuB
 from gui_form_menu_C import FormMenuC
-from gui_form_menu_game_l1 import FormGameLevel1
+from Z_CLASE_23_inicio_NO_TOUCH.gui_form_menu_game_l1 import FormGameLevel1
 
 
 flags = DOUBLEBUF

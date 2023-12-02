@@ -4,7 +4,7 @@ from enemigo import Enemy
 # from player import Player
 from constantes import *
 from auxiliar import Auxiliar
-from gui_form_menu_game_l1 import *
+from Z_CLASE_23_inicio_NO_TOUCH.gui_form_menu_game_l1 import *
 import math
 
 
