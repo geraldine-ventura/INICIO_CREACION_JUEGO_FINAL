@@ -445,10 +445,8 @@ class Player:
         # Realiza la detección de colisiones aquí
         if self.ground_collition_rect.colliderect(enemy_shoot_rect):
             print("Colisión con disparo del enemigo")
-            # Colisión detectada, llama al método dead
-            self.direction = (
-                DIRECTION_R  # Proporciona la dirección correcta según tu lógica
-            )
+
+            self.direction = DIRECTION_R
             self.player_rect = (
                 self.ground_collition_rect
             )  # Usa el rectángulo correcto del jugador

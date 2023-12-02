@@ -68,6 +68,7 @@ class Bullet(pygame.sprite.Sprite):
             self.check_impact(enemy_group, player_1)
 
     def shoot(self):
+        # ya se ceo en class player
         # Este método parece estar creando una nueva bala, pero ya estás en una instancia de Bullet.
         # Considera si realmente necesitas crear otra bala aquí o si puedes usar la instancia actual.
         pass

@@ -244,9 +244,13 @@ class FormGameLevel1(Form):
         for aux_widget in self.widget_list:
             aux_widget.update(lista_eventos)
 
-        """ self.bullet_group.update(
-            delta_ms, self.plataform_list, self.enemy_group, self.player_1
-        ) """
+        """ for bullet in self.player_instance.bullet_list:
+            bullet.update(delta_ms, self.plataform_list, self.enemy_group) """
+
+        """ # Eliminar balas que estén fuera de la pantalla o hayan colisionado
+        self.bullet_list = [
+            bullet for bullet in self.bullet_list if bullet.is_alive()
+        ] """
 
         for enemy_element in self.enemy_group:
             enemy_element.update(delta_ms, self.plataform_list)
@@ -273,8 +277,8 @@ class FormGameLevel1(Form):
 
         self.player_1.draw(self.surface)
 
-        """ for bullet_element in self.bullet_group:
-            bullet_element.draw(self.surface) """
+        """ for bullet in self.bullet_list:
+            bullet.draw(self.surface) """
 
 
 # Detener sonidos al salir del juego
