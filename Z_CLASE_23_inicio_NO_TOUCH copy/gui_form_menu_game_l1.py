@@ -10,22 +10,61 @@ from enemigo import Enemy
 from plataforma import Plataform
 from background import Background
 from bullet import Bullet
-from botin import Fruta
+from botin import *
+from sound import *
 
 
 class FormGameLevel1(Form):
     def __init__(
-        self, name, master_surface, x, y, w, h, color_background, color_border, active
+        self,
+        name,
+        master_surface,
+        x,
+        y,
+        w,
+        h,
+        color_background,
+        color_border,
+        active,
+        enemy_group,
     ):
         super().__init__(
             name, master_surface, x, y, w, h, color_background, color_border, active
         )
+        self.enemy_group = enemy_group
+        self.bullet_group = pygame.sprite.Group()  # Inicializa el grupo de balas
+
+        # Resto de tu código...
+
+    def on_click_shoot(self, parametro):
+        for enemy_element in self.enemy_group:
+            bullet = Bullet(
+                enemy_element,
+                enemy_element.rect.centerx,
+                enemy_element.rect.centery,
+                self.player_1.rect.centerx,
+                self.player_1.rect.centery,
+                10,
+                path="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Bars/Bar_Segment05.png",
+                frame_rate_ms=80,
+                move_rate_ms=50,
+                width=6,
+                height=6,
+                direction="left",
+            )
+            self.bullet_group.add(bullet)  # Agrega la bala al grupo de balas
+
+    def update(self, lista_eventos, keys, delta_ms):
+        # Resto de tu código...
+        self.bullet_group.update(
+            delta_ms, self.plataform_list, self.enemy_group, self.player_1
+        )
 
         self.player_1 = Player(
-            x=x,
-            y=y,
-            width=40,
-            height=40,
+            x=0,
+            y=0,
+            # width=40,
+            # height=40,
             speed_walk=20,
             speed_run=20,
             gravity=20,
@@ -103,22 +142,23 @@ class FormGameLevel1(Form):
             value=5,
             value_max=5,
         )
-        self.widget_list = [self.boton1, self.boton2, self.pb_lives, self.boton_shoot]
 
+        self.widget_list = [self.boton1, self.boton2, self.boton_shoot, self.pb_lives]
+        self.render()
         # --- GAME ELEMENTS ---
         self.static_background = Background(
             x=0,
             y=0,
-            width=w,
-            height=h,
+            width=ANCHO_VENTANA,
+            height=ALTO_VENTANA,  # ver
             path="Z_CLASE_23_inicio_NO_TOUCH/images/back/depositphotos_56565763-stock-illustration-seamless-background-fabulous-night-forest (1).jpg",
         )
 
         self.player_1 = Player(
             x=0,
             y=400,
-            speed_walk=6,
-            speed_run=12,
+            speed_walk=8,
+            speed_run=20,
             gravity=14,
             jump_power=30,
             frame_rate_ms=150,
@@ -126,29 +166,46 @@ class FormGameLevel1(Form):
             jump_height=140,
             p_scale=0.2,
             interval_time_jump=300,
-            width=20,
-            height=20,
         )
 
         # lo defino como un atributo de la instancia (self.player_rect), en lugar de una variable local.
         self.player_ground_collition_rect = self.player_1.ground_collition_rect
 
-        self.enemy_list = []
-        self.enemy_list.append(
-            Enemy(
-                x=450,
-                y=400,
-                speed_walk=6,
-                speed_run=5,
-                gravity=14,
-                jump_power=30,
-                frame_rate_ms=150,
-                move_rate_ms=50,
-                jump_height=140,
-                p_scale=0.08,
-                interval_time_jump=300,
-            )
+        ##------------------------------------------------------ # Crear el grupo de enemigos----------------------
+
+        self.enemy_group = pygame.sprite.Group()
+
+        # Crear instancias de enemigos y agregarlas al grupo
+        enemy1 = Enemy(
+            x=450,
+            y=400,
+            speed_walk=6,
+            speed_run=5,
+            gravity=14,
+            jump_power=30,
+            frame_rate_ms=150,
+            move_rate_ms=50,
+            jump_height=140,
+            p_scale=0.08,
+            interval_time_jump=300,
+            enemy_group=self.enemy_group,
         )
+        enemy2 = Enemy(
+            x=900,
+            y=400,
+            speed_walk=6,
+            speed_run=5,
+            gravity=14,
+            jump_power=30,
+            frame_rate_ms=150,
+            move_rate_ms=50,
+            jump_height=140,
+            p_scale=0.08,
+            interval_time_jump=300,
+            enemy_group=self.enemy_group,
+        )
+
+        self.enemy_group.add(enemy1, enemy2)
 
         # *gregar mas plataformas a JUEGO_GAME_FINAL1
         self.plataform_list = []
@@ -174,46 +231,42 @@ class FormGameLevel1(Form):
             Plataform(x=900, y=360, width=50, height=50, type=14)
         )
 
-        self.bullet_list = []  ####ver si comentar
-
     def on_click_boton1(self, parametro):
         self.set_active(parametro)
 
     def on_click_shoot(self, parametro):
-        if isinstance(
-            self.player_1, Player
-        ):  # Verifica si self.player_1 es una instancia de Player
-            for enemy_element in self.enemy_list:
-                # se crea una instancia de la clase Bullet para representar un proyectil o bala en el juego.
-                self.bullet_list.append(
-                    Bullet(
-                        enemy_element,
-                        enemy_element.rect.centerx,
-                        enemy_element.rect.centery,
-                        self.player_1.rect.centerx,
-                        self.player_1.rect.centery,
-                        10,
-                        path="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Bars/Bar_Segment05.png",
-                        frame_rate_ms=120,
-                        move_rate_ms=200,
-                        width=6,
-                        height=6,
-                        direction="left",
-                    )
-                )
-        else:
-            print("Error: self.player_1 no es una instancia de la clase Player.")
+        for enemy_element in self.enemy_group:
+            bullet = Bullet(
+                enemy_element,
+                enemy_element.rect.centerx,
+                enemy_element.rect.centery,
+                self.player_1.rect.centerx,
+                self.player_1.rect.centery,
+                10,
+                path="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Bars/Bar_Segment05.png",
+                frame_rate_ms=80,
+                move_rate_ms=50,
+                width=6,
+                height=6,
+                direction="left",
+            )
+            self.bullet_group.add(bullet)
+
+    def render(self):  # extra para buscar sol de self.widget_list
+        if self.color_background is not None:
+            self.surface.fill(self.color_background)
 
     def update(self, lista_eventos, keys, delta_ms):
         for aux_widget in self.widget_list:
             aux_widget.update(lista_eventos)
+            print(type(aux_widget))
+            print(id(self))
 
-        for bullet_element in self.bullet_list:
-            bullet_element.update(
-                delta_ms, self.plataform_list, self.enemy_list, self.player_1
-            )
+        self.bullet_group.update(
+            delta_ms, self.plataform_list, self.enemy_group, self.player_1
+        )
 
-        for enemy_element in self.enemy_list:
+        for enemy_element in self.enemy_group:
             enemy_element.update(delta_ms, self.plataform_list)
 
         self.player_1.events(delta_ms, keys)
@@ -231,10 +284,13 @@ class FormGameLevel1(Form):
         for plataforma in self.plataform_list:
             plataforma.draw(self.surface)
 
-        for enemy_element in self.enemy_list:
+        frutas_group.draw(self.surface)
+
+        for enemy_element in self.enemy_group:
             enemy_element.draw(self.surface)
 
         self.player_1.draw(self.surface)
 
-        for bullet_element in self.bullet_list:
-            bullet_element.draw(self.surface)
+
+# Detener sonidos al salir del juego
+stop_sounds()

@@ -12,6 +12,8 @@ flags = DOUBLEBUF
 screen = pygame.display.set_mode((ANCHO_VENTANA, ALTO_VENTANA), flags, 16)
 pygame.init()
 clock = pygame.time.Clock()
+enemy_group = pygame.sprite.Group()
+
 
 form_menu_A = FormMenuA(
     name="form_menu_A",
@@ -57,6 +59,7 @@ form_game_L1 = FormGameLevel1(
     color_background=(0, 255, 255),
     color_border=(255, 0, 255),
     active=False,
+    enemy_group=enemy_group,
 )
 
 while True:
@@ -69,6 +72,7 @@ while True:
     # Luego, se obtienen las teclas presionadas y el tiempo transcurrido desde la última llamada al método tick:
 
     keys = pygame.key.get_pressed()
+
     delta_ms = clock.tick(FPS)
 
     aux_form_active = Form.get_active()

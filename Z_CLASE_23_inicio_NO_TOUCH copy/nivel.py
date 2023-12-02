@@ -9,6 +9,14 @@ class Nivel:
 
         # Crea instancias de frutas en posiciones específicas del nivel
         self.frutas_group = pygame.sprite.Group()
-        fruta_1 = Fruta(100, 200, "ruta_a_la_imagen_1.png")
-        fruta_2 = Fruta(300, 400, "ruta_a_la_imagen_2.png")
+        fruta_1 = Fruta(
+            300,
+            200,
+            "Z_CLASE_23_inicio_NO_TOUCH copy/images/food/banana/apple__x1_iconic_png_1354829396.png",
+        )
+        fruta_2 = Fruta(
+            300,
+            400,
+            "Z_CLASE_23_inicio_NO_TOUCH copy/images/food/banana/banana__x1_iconic_png_1354829403.png",
+        )
         self.frutas_group.add(fruta_1, fruta_2)

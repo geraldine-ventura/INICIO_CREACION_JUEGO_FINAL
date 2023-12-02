@@ -1,67 +1,43 @@
-""" # fruta.py
-
 import pygame
 
 
 class Fruta(pygame.sprite.Sprite):
-    def __init__(self, x, y, width, height):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
+    def __init__(self, x, y, width, height, image_path, p_scale):
+        super().__init__()
+        self.image = pygame.image.load(image_path)  # Cargar la imagen desde el archivo
+        self.rect = self.image.get_rect(topleft=(x, y))
+        self.p_scale = p_scale
 
 
-# Crear una instancia de Fruit con valores específicos
-fruta = Fru(x=100, y=200, width=30, height=30)
+""" m(x=400, y=500, width=50, height=50, type=0))
+        self.plataform_list.append(Plataform(x=450, y=500, width=50, height=50, type=1))
+        self.plataform_list.append(Plataform(x=500, y=500, width=50, height=50, type=2)) """
 
-# Crear un objeto pygame.Rect usando los atributos de la fruta
-enemy_shoot_rect = pygame.Rect(fruta.x, fruta.y, fruta.width, fruta.height)
- """
-""" # fruta.py
-
-import pygame
-
-
-class Fruta(pygame.sprite.Sprite):
-    def __init__(self, x, y, width, height):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-
-
-# Crear una instancia de Fruit con valores específicos
-fruta = Fru(x=100, y=200, width=30, height=30)
-
-# Crear un objeto pygame.Rect usando los atributos de la fruta
-enemy_shoot_rect = pygame.Rect(fruta.x, fruta.y, fruta.width, fruta.height)
- """
-import pygame
-
-
-class Fruta(pygame.sprite.Sprite):
-    def __init__(self, x, y, width, height, image_path):
-        super().__init__()  # Llama al inicializador de la clase base
-        self.image = pygame.Surface(
-            (width, height)
-        )  # Crea una superficie para el sprite
-        self.image.fill(
-            (255, 0, 0)
-        )  # Rellena la superficie con un color rojo (solo como ejemplo)
-        self.rect = self.image.get_rect(
-            topleft=(x, y)
-        )  # Obtiene el rectángulo del sprite
-
-
-# Crear una instancia de Fruta
+# Crear instancias de Fruta
 fruta_1 = Fruta(
-    x=100,
-    y=200,
-    width=30,  # Ajusta el valor de width según tus necesidades
-    height=30,  # Ajusta el valor de height según tus necesidades
-    image_path="Z_CLASE_23_inicio_NO_TOUCH copy/images/gui/set_gui_01/Data_Border/Elements/Element02.png",
+    420,
+    400,
+    10,
+    10,
+    "Z_CLASE_23_inicio_NO_TOUCH copy/images/food/apple/apple__x1_iconic_png_1354829396.png",
+    0.1,
+)
+fruta_2 = Fruta(
+    600,
+    300,
+    10,
+    10,
+    "Z_CLASE_23_inicio_NO_TOUCH copy/images/food/banana/banana__x1_iconic_png_1354829403.png",
+    0.005,
+)
+fruta_3 = Fruta(
+    800,
+    200,
+    10,
+    10,
+    "Z_CLASE_23_inicio_NO_TOUCH copy/images/food/carrot/carrot__x1_iconic_png_1354829739.png",
+    0.08,
 )
 
-
-# Ahora, puedes acceder a la imagen y el rectángulo del sprite
-enemy_shoot_rect = fruta_1.rect
+# Crear un grupo de frutas y agregar las instancias al grupo
+frutas_group = pygame.sprite.Group(fruta_1, fruta_2, fruta_3)

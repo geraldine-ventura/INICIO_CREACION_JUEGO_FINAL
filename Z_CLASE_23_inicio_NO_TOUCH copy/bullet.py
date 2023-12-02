@@ -1,14 +1,14 @@
 import pygame
 from enemigo import Enemy
-
-# from player import Player
 from constantes import *
 from auxiliar import Auxiliar
-from gui_form_menu_game_l1 import *
+
+# from gui_form_menu_game_l1 import *
 import math
+from sound import *
 
 
-class Bullet:
+class Bullet(pygame.sprite.Sprite):
     def __init__(
         self,
         owner,
@@ -26,7 +26,6 @@ class Bullet:
     ) -> None:
         self.direction = direction
         self.tiempo_transcurrido_move = 0
-        self.tiempo_transcurrido_animation = 0
         self.image = pygame.image.load(path).convert()
         self.image = pygame.transform.scale(self.image, (width, height))
         self.rect = self.image.get_rect()
@@ -37,9 +36,8 @@ class Bullet:
         self.rect.y = y_init
         self.frame_rate_ms = frame_rate_ms
         self.move_rate_ms = move_rate_ms
-        angle = math.atan2(
-            y_end - y_init, x_end - x_init
-        )  # Obtengo el angulo en radianes
+
+        angle = math.atan2(y_end - y_init, x_end - x_init)
         print("El angulo en grados es:", int(angle * 180 / math.pi))
 
         self.move_x = math.cos(angle) * speed
@@ -55,56 +53,48 @@ class Bullet:
         self.y = self.y + delta_y
         self.rect.y = int(self.y)
 
-    def do_movement(self, delta_ms, plataform_list, enemy_list, player_1):
+    def is_on_platform(self, plataform_list):
+        for platform in plataform_list:
+            if self.rect.colliderect(platform.rect):
+                return True
+        return False
+
+    def do_movement(self, delta_ms, plataform_list, enemy_group, player_1):
         self.tiempo_transcurrido_move += delta_ms
         if self.tiempo_transcurrido_move >= self.move_rate_ms:
             self.tiempo_transcurrido_move = 0
             self.change_x(self.move_x)
             self.change_y(self.move_y)
-            self.check_impact(enemy_list, player_1)
+            self.check_impact(enemy_group, player_1)
 
-    """ # -----------------------new
+    def shoot(self):
+        # Este método parece estar creando una nueva bala, pero ya estás en una instancia de Bullet.
+        # Considera si realmente necesitas crear otra bala aquí o si puedes usar la instancia actual.
+        pass
 
-        if not self.is_on_plataform(plataform_list):
-            if self.move_y == 0:
-                self.is_fall = True
-                self.change_y(self.gravity)
-
-                # Itera sobre la lista de enemigos y llama al método check_jump_collision después de cambiar la posición
-                for enemy in enemy_list:
-                    if self.is_on_plataform(plataform_list):
-                        enemy.check_jump_collision(self.collition_rect)
-        # -----------------------new """
-
-    def do_animation(self, delta_ms):
-        self.tiempo_transcurrido_animation += delta_ms
-        if self.tiempo_transcurrido_animation >= self.frame_rate_ms:
-            self.tiempo_transcurrido_animation = 0
-            pass
-
-    def check_impact(self, enemy_list, player_1):
-        # Verifica la colisión solo si la bala está activa
+    # En la clase Bullet
+    def check_impact(self, enemy_group, player_1, bullet_group):
         if self.is_active:
-            if hasattr(enemy_list, "__iter__"):  # Verifica si es iterable
-                for enemy_element in enemy_list:
+            if hasattr(enemy_group, "__iter__"):
+                for enemy_element in enemy_group:
                     if isinstance(enemy_element, Enemy) and self.rect.colliderect(
                         enemy_element.rect
                     ):
                         print("Impacto bullet para enemigo detectado ")
                         self.is_active = False
-                        enemy_element.receive_shoot(self.rect)
+                        enemy_element.receive_shoot(bullet_group, self.rect)
+                        if impact_sound:
+                            impact_sound.play()
             else:
-                print("Error: enemy_list no es iterable")
+                print("Error: enemy_group no es iterable")
 
-            # Verifica la colisión con el jugador solo si la bala está activa
             if self.rect.colliderect(player_1.rect):
                 print("Impacto bullet para jugador detectado ")
                 self.is_active = False
                 player_1.receive_shoot(player_1.direction, player_1.rect)
 
-    def update(self, delta_ms, plataform_list, enemy_list, player_1):
-        self.do_movement(delta_ms, plataform_list, enemy_list, player_1)
-        self.do_animation(delta_ms)
+    def update(self, delta_ms, plataform_list, enemy_group, player_1):
+        self.do_movement(delta_ms, plataform_list, enemy_group, player_1)
 
     def draw(self, screen):
         if self.is_active:

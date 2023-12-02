@@ -1,8 +1,9 @@
 import pygame
-
+from knife import Knife
 from bullet import Bullet
 from constantes import *
 from auxiliar import Auxiliar
+from enemigo import *
 
 
 class Player:
@@ -17,13 +18,11 @@ class Player:
         frame_rate_ms,
         move_rate_ms,
         jump_height,
-        height,
-        width,
+        # height,
+        # width,
         p_scale=1,
         interval_time_jump=100,
     ) -> None:
-        self.width = width
-        self.height = height
         # -------------------------------------------------------------
         self.stay_r = Auxiliar.getSurfaceFromSeparateFiles(
             "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Idle ({0}).png",
@@ -158,6 +157,7 @@ class Player:
         self.bullet_list = []  # puedo crearlo en otro lado esta lista mas genrico
 
         self.enemy_list = []
+        self.knife_list = []
 
         ###----------------COALISIONES---------->>>>>>>>>>>>>>>>>>>>>
         # está definiendo un rectángulo de colisión que es más estrecho que el rectángulo original
@@ -297,9 +297,34 @@ class Player:
     ####----------knife/acuchillar------>>>>>>>>>>>>
     def knife(self, on_off=True):
         self.is_knife = on_off
-        if on_off == True and self.is_jump == False and self.is_fall == False:
+        if (
+            on_off == True
+            and self.is_jump == False
+            and self.is_fall == False
+            and self.is_shoot == False
+        ):
+            for enemy in self.enemy_list:
+                if self.collition_rect.colliderect(enemy.rect):
+                    enemy.receive_knife_damage()
+                    enemy.reset_position()
+
+            knife_1 = Knife(
+                owner=self,
+                x_init=self.rect.right,
+                y_init=self.rect.center[1],
+                x_end=ANCHO_VENTANA,
+                y_end=self.rect.y,
+                speed=20,
+                frame_rate_ms=100,
+                move_rate_ms=50,
+                width=5,
+                height=5,
+            )
+            self.knife_list.append(knife_1)
+
             if self.animation != self.knife_r and self.animation != self.knife_l:
                 self.frame = 0
+                self.is_shoot = True
                 if self.direction == DIRECTION_R:
                     self.animation = self.knife_r
                 else:
@@ -349,29 +374,6 @@ class Player:
         self.rect.y += delta_y
         self.collition_rect.y += delta_y
         self.ground_collition_rect.y += delta_y
-
-    def do_movement(self, delta_ms, plataform_list, enemy_list):
-        self.tiempo_transcurrido_move += delta_ms
-        if self.tiempo_transcurrido_move >= self.move_rate_ms:
-            self.tiempo_transcurrido_move = 0
-
-            if abs(self.y_start_jump - self.rect.y) > self.jump_height and self.is_jump:
-                self.move_y = 0
-
-            self.change_x(self.move_x)
-            self.change_y(self.move_y)
-
-            if not self.is_on_plataform(plataform_list):
-                if self.move_y == 0:
-                    self.is_fall = True
-                    self.change_y(self.gravity)
-
-            # Itera sobre la lista de enemigos y llama al método check_jump_collision después de cambiar la posición
-            for enemy in enemy_list:
-                if self.is_on_plataform(
-                    plataform_list
-                ):  # Asegúrate de que el jugador esté en una plataforma antes de llamar a check_jump_collision
-                    enemy.check_jump_collision(self.collition_rect)
 
     #################revisar so_momwnt para que mi personaje se pueda mover
     def do_movement(self, delta_ms, plataform_list, enemy_list):
@@ -426,6 +428,7 @@ class Player:
     def update(self, delta_ms, plataform_list, enemy_shoot_rect=None):
         self.do_movement(delta_ms, plataform_list, self.enemy_list)
         self.do_animation(delta_ms)
+
         # ----------------------------------------botin----------------------------
         # Suponiendo que frutas_group es una referencia al grupo de frutas
         # self.check_colision_frutas(frutas_group)
@@ -435,11 +438,9 @@ class Player:
             self.check_collision(enemy_shoot_rect)
 
     def check_collision(self, enemy_shoot_rect):
-        # Otras líneas de código...
-        # Supongamos que tienes valores adecuados para direction y player_rect
         direction = "izquierda"  # Reemplaza esto con el valor correcto
         player_rect = self.ground_collition_rect  # Usar el rectángulo real del jugador
-        self.receive_shoot(direction, player_rect)
+        self.receive_shoot(direction, direction, player_rect)
 
         # Realiza la detección de colisiones aquí
         if self.ground_collition_rect.colliderect(enemy_shoot_rect):
@@ -461,6 +462,7 @@ class Player:
             )
 
         self.image = self.animation[self.frame]
+
         screen.blit(self.image, self.rect)
 
     #######-----------------------EVENTS------------------------------------>>>>>>>>>>>>>>>>>>
@@ -516,12 +518,3 @@ class Player:
         #######---------------------------knife------------------->>>>>>>>>>>>>>>>>>
         if keys[pygame.K_a] and not keys[pygame.K_s]:
             self.knife()
-
-            """ self.reset_animation()  # Resetea la animación después de realizar el ataque con cuchillo """
-
-        """if keys[pygame.K_s] and not keys[pygame.K_a]:
-            self.shoot()
-
-        if keys[pygame.K_a] and not keys[pygame.K_s]:
-            self.knife()
-        """

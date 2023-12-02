@@ -1,6 +1,8 @@
 import pygame
 import math
 
+# from gui_form_menu_game_l1 import *
+
 
 class Knife:
     def __init__(
@@ -36,19 +38,15 @@ class Knife:
     def change_y(self, delta_y):
         self.rect.y += delta_y
 
-    def do_movement(self, delta_ms, plataform_list, enemy_list, player_1):
+    def do_movement(self, delta_ms, plataform_list, enemy_group, player_1):
         if self.is_active:
             self.change_x(self.move_x)
             self.change_y(self.move_y)
 
-    """    # Verifica si enemy_list es iterable
-        if hasattr(enemy_list, "__iter__"):
-            self.check_impact(enemy_list, player_1) """
-
-    def check_impact(self, enemy_list, player_1):
+    def check_impact(self, enemy_group, player_1):
         if self.is_active:
             # Verifica la colisión con los enemigos
-            for enemy_element in enemy_list:
+            for enemy_element in enemy_group:
                 if self.owner != enemy_element and self.rect.colliderect(
                     enemy_element.rect
                 ):
@@ -66,8 +64,8 @@ class Knife:
                     # Proporciona la dirección y el rectángulo del jugador al recibir el impacto
                     player_1.receive_shoot(self.move_x, player_1.rect)
 
-    def update(self, delta_ms, plataform_list, enemy_list, player_1):
-        self.do_movement(delta_ms, plataform_list, enemy_list, player_1)
+    def update(self, delta_ms, plataform_list, enemy_group, player_1):
+        self.do_movement(delta_ms, plataform_list, enemy_group, player_1)
 
     def draw(self, screen):
         if self.is_active:
