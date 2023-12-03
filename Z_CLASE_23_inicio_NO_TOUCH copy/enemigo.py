@@ -146,6 +146,7 @@ class Enemy(pygame.sprite.Sprite):
             enemies_hit = pygame.sprite.spritecollide(self, self.enemy_group, False)
             for enemy in enemies_hit:
                 enemy.kill()  # Elimina el enemigo del grupo
+                self.spawn_new_enemies()  # Crea nuevos enemigos
 
         elif self.knife_count >= 3:
             self.receive_shoot()
@@ -153,6 +154,13 @@ class Enemy(pygame.sprite.Sprite):
         # Espera 3 segundos antes de desaparecer
         time.sleep(3)
         self.is_alive = False
+
+    def spawn_new_enemies(self):
+        # Lógica para crear nuevos enemigos
+        # Puedes ajustar esto según la necesidad de tu juego
+        for _ in range(2):  # Crea dos nuevos enemigos
+            new_enemy = Enemy(x=200, y=300, speed=10)
+            self.enemy_group.add(new_enemy)
 
     def reset_animation(self):
         # Lógica para restablecer la animación del enemigo

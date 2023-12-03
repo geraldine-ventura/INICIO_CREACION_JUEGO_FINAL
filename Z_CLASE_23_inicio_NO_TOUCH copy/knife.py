@@ -26,6 +26,8 @@ class Knife:
         self.frame_rate_ms = frame_rate_ms
         self.move_rate_ms = move_rate_ms
 
+        self.shots_fired = 0  # Atributo para contar los disparos del jugador
+
         angle = math.atan2(y_end - y_init, x_end - x_init)
         self.move_x = math.cos(angle) * speed
         self.move_y = math.sin(angle) * speed

@@ -3,6 +3,11 @@ from enemigo import Enemy
 from constantes import *
 from auxiliar import Auxiliar
 
+# Agrega esta línea·.me aparece que no se puede accesder a estab linea
+
+# Resto de tu código...
+
+
 # from gui_form_menu_game_l1 import *
 import math
 from sound import *
@@ -73,26 +78,33 @@ class Bullet(pygame.sprite.Sprite):
         # Considera si realmente necesitas crear otra bala aquí o si puedes usar la instancia actual.
         pass
 
-    # En la clase Bullet
-    def check_impact(self, enemy_group, player_1, bullet_group):
+    def check_impact(self, enemy_group, player_1):
         if self.is_active:
-            if hasattr(enemy_group, "__iter__"):
-                for enemy_element in enemy_group:
-                    if isinstance(enemy_element, Enemy) and self.rect.colliderect(
-                        enemy_element.rect
-                    ):
-                        print("Impacto bullet para enemigo detectado ")
-                        self.is_active = False
-                        enemy_element.receive_shoot(bullet_group, self.rect)
-                        if impact_sound:
-                            impact_sound.play()
-            else:
-                print("Error: enemy_group no es iterable")
+            # Lógica de colisión con enemigos
+            for enemy_element in enemy_group:
+                if isinstance(enemy_element, Enemy) and self.rect.colliderect(
+                    enemy_element.rect
+                ):
+                    print("Impacto bullet para enemigo detectado ")
+                    self.is_active = False
+                    enemy_element.receive_shoot(self.rect)
+                    if impact_sound:
+                        impact_sound.play()
 
+            # Lógica de colisión con jugador
             if self.rect.colliderect(player_1.rect):
                 print("Impacto bullet para jugador detectado ")
                 self.is_active = False
-                player_1.receive_shoot(player_1.direction, player_1.rect)
+                player_1.receive_shoot(self.rect)
+
+                # Contador de disparos en el jugador
+                player_1.shots_fired += 1
+                if player_1.shots_fired >= 3:
+                    # Duplicar enemigos
+                    enemy1 = Enemy(...)
+                    enemy2 = Enemy(...)
+                    enemy_group.add(enemy1, enemy2)
+                    player_1.shots_fired = 0
 
     def update(self, delta_ms, plataform_list, enemy_group, player_1):
         self.do_movement(delta_ms, plataform_list, enemy_group, player_1)

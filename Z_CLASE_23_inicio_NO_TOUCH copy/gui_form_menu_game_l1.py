@@ -5,7 +5,7 @@ from gui_form import Form
 from gui_button import Button
 from gui_textbox import TextBox
 from gui_progressbar import ProgressBar
-
+from knife import Knife
 from player import Player
 from enemigo import Enemy
 from plataforma import Plataform
@@ -41,6 +41,8 @@ class FormGameLevel1(Form):
             active,
         )
         self.enemy_group = enemy_group
+
+        self.shots_fired = 0  # ·· Atributo para contar los disparos del jugador
 
         # Resto de tu código...
 
@@ -190,6 +192,9 @@ class FormGameLevel1(Form):
         )
 
         self.enemy_group.add(enemy1, enemy2)
+        # Añado instancias de Bullet y Knife a tu clase
+        self.bullet_list = []
+        self.knife_list = []  # Asegúrate de agregar esta línea
 
         # *gregar mas plataformas a JUEGO_GAME_FINAL1
         self.plataform_list = []
@@ -244,13 +249,11 @@ class FormGameLevel1(Form):
         for aux_widget in self.widget_list:
             aux_widget.update(lista_eventos)
 
-        """ for bullet in self.player_instance.bullet_list:
-            bullet.update(delta_ms, self.plataform_list, self.enemy_group) """
+        for bullet in self.bullet_list:  # revisar player_instance
+            bullet.update(delta_ms, self.plataform_list, self.enemy_group)
 
-        """ # Eliminar balas que estén fuera de la pantalla o hayan colisionado
-        self.bullet_list = [
-            bullet for bullet in self.bullet_list if bullet.is_alive()
-        ] """
+        # Eliminar balas que estén fuera de la pantalla o hayan colisionado
+        self.bullet_list = [bullet for bullet in self.bullet_list if bullet.is_alive()]
 
         for enemy_element in self.enemy_group:
             enemy_element.update(delta_ms, self.plataform_list)
@@ -258,7 +261,27 @@ class FormGameLevel1(Form):
         self.player_1.events(delta_ms, keys)
         self.player_1.update(delta_ms, self.plataform_list)
 
-        self.pb_lives.value = self.player_1.lives
+        if keys[K_a]:
+            knife = Knife(
+                owner=self.player_1,
+                x_init=0,  # Ajusta los parámetros necesarios
+                y_init=0,
+                x_end=200,
+                y_end=200,
+                speed=5,
+                frame_rate_ms=100,
+                move_rate_ms=50,
+                width=5,
+                height=5,
+            )
+
+        for knife in self.knife_list:
+            knife.update(delta_ms, self.plataform_list, self.enemy_group, self.player_1)
+
+            # Elimina cuchillos que hayan colisionado
+            self.knife_list = [knife for knife in self.knife_list if knife.is_active]
+
+            self.pb_lives.value = self.player_1.lives
 
     def draw(self):
         super().draw()
@@ -270,15 +293,15 @@ class FormGameLevel1(Form):
         for plataforma in self.plataform_list:
             plataforma.draw(self.surface)
 
-        frutas_group.draw(self.surface)
+        frutas_group.draw(self.surface)  # frutas
 
         for enemy_element in self.enemy_group:
             enemy_element.draw(self.surface)
 
         self.player_1.draw(self.surface)
 
-        """ for bullet in self.bullet_list:
-            bullet.draw(self.surface) """
+        for bullet in self.bullet_list:
+            bullet.draw(self.surface)
 
 
 # Detener sonidos al salir del juego

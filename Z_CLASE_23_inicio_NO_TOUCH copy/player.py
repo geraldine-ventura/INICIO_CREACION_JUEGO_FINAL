@@ -4,6 +4,7 @@ from bullet import Bullet
 from constantes import *
 from auxiliar import Auxiliar
 from enemigo import *
+from botin import frutas_group
 
 
 class Player:
@@ -156,8 +157,7 @@ class Player:
 
         self.bullet_list = []  # puedo crearlo en otro lado esta lista mas genrico
 
-        self.enemy_list = []
-        self.knife_list = []
+        self.enemy_list = []  # ver si comentar
 
         ###----------------COALISIONES---------->>>>>>>>>>>>>>>>>>>>>
         # está definiendo un rectángulo de colisión que es más estrecho que el rectángulo original
@@ -191,6 +191,7 @@ class Player:
         self.interval_time_jump = interval_time_jump
         # Inicialización de la clase Jugador
         self.frutas_recolectadas = 0  # mod botin.py
+        self.shots_fired = 0  # # Atributo para contar los disparos del jugador
 
     # --------------------------------botin-----------------------
     def check_colision_frutas(self, frutas_group):
@@ -289,12 +290,14 @@ class Player:
             self.animation = self.stay_l
         self.frame = 0
 
+    ####----------knife/acuchillar------>>>>>>>>>>>>
+    knife_list = []
+
     def receive_knife(self):
         self.lives -= 1
         # Puedes realizar acciones adicionales cuando el jugador recibe un ataque de cuchillo
         # self.reset_animation()
 
-    ####----------knife/acuchillar------>>>>>>>>>>>>
     def knife(self, on_off=True):
         self.is_knife = on_off
         if (
@@ -431,7 +434,7 @@ class Player:
 
         # ----------------------------------------botin----------------------------
         # Suponiendo que frutas_group es una referencia al grupo de frutas
-        # self.check_colision_frutas(frutas_group)
+        self.check_colision_frutas(frutas_group)
 
         # ------------------------------------------------------------------------
         if enemy_shoot_rect:
