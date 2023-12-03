@@ -3,6 +3,7 @@ from enemigo import Enemy
 from constantes import *
 from auxiliar import Auxiliar
 
+
 # Agrega esta línea·.me aparece que no se puede accesder a estab linea
 
 # Resto de tu código...

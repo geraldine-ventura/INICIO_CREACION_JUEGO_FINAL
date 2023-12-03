@@ -1,5 +1,8 @@
 # from player import
 import pygame
+from pygame import error as PygameError
+
+
 from constantes import *
 from auxiliar import Auxiliar
 from bullet import *
@@ -26,52 +29,54 @@ class Enemy(pygame.sprite.Sprite):
     ) -> None:
         # Llame al inicializador de la clase base
         super().__init__()
+
+        # JUEGO_FINAL_PROGRA_LABO_1
         self.walk_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/enemies/ork_sword/WALK/WALK_00{0}.png",
+            "JUEGO_FINAL_PROGRA_LABO_1/images/caracters/enemies/ork_sword/WALK/WALK_00{0}.png",
             0,
-            7,
+            6,
             scale=p_scale,
         )
         self.walk_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/enemies/ork_sword/WALK/WALK_00{0}.png",
+            "JUEGO_FINAL_PROGRA_LABO_1/images/caracters/enemies/ork_sword/WALK/WALK_00{0}.png",
             0,
-            7,
+            6,
             flip=True,
             scale=p_scale,
         )
         self.stay_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/enemies/ork_sword/IDLE/IDLE_00{0}.png",
+            "JUEGO_FINAL_PROGRA_LABO_1/images/caracters/enemies/ork_sword/IDLE/IDLE_00{0}.png",
             0,
-            7,
+            6,
             scale=p_scale,
         )
         self.stay_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/enemies/ork_sword/IDLE/IDLE_00{0}.png",
+            "JUEGO_FINAL_PROGRA_LABO_1/images/caracters/enemies/ork_sword/IDLE/IDLE_00{0}.png",
             0,
-            7,
+            6,
             flip=True,
             scale=p_scale,
         )
         ##-----------dead-enemy-path---------->
         self.enemy_dead_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/enemies/ork_sword/DIE/DIE_00{0}.png",
+            "JUEGO_FINAL_PROGRA_LABO_1/images/caracters/enemies/ork_sword/DIE/DIE_00{0}.png",
             0,
             6,
             flip=False,
             scale=p_scale,
         )
         self.enemy_dead_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/enemies/ork_sword/DIE/DIE_00{0}.png",
+            "JUEGO_FINAL_PROGRA_LABO_1/images/caracters/enemies/ork_sword/DIE/DIE_00{0}.png",
             0,
             6,
             flip=True,
             scale=p_scale,
         )
 
-        ##---------enemy_shoot_path----------->
+        """  ##---------enemy_shoot_path----------->
 
         self.enemy_shoot_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/enemies/ork_sword/DIE/DIE_00{0}.png",
+            "JUEGO_FINAL_PROGRA_LABO_1/images/caracters/enemies/ork_sword/DIE/DIE_00{0}.png",
             1,
             3,
             flip=False,
@@ -79,13 +84,13 @@ class Enemy(pygame.sprite.Sprite):
             repeat_frame=2,
         )
         self.enemy_shoot_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/enemies/ork_sword/DIE/DIE_00{0}.png",
+            "JUEGO_FINAL_PROGRA_LABO_1/images/caracters/enemies/ork_sword/DIE/DIE_00{0}.png",
             1,
             3,
             flip=True,
             scale=p_scale,
             repeat_frame=2,
-        )
+        ) """
 
         self.contador = 0
         self.frame = 0

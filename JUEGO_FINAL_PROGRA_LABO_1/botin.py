@@ -19,7 +19,7 @@ fruta_1 = Fruta(
     400,
     10,
     10,
-    "Z_CLASE_23_inicio_NO_TOUCH copy/images/food/apple/apple__x1_iconic_png_1354829396.png",
+    "JUEGO_FINAL_PROGRA_LABO_1/images/food/apple/apple__x1_iconic_png_1354829396.png",
     0.1,
 )
 fruta_2 = Fruta(
@@ -27,7 +27,7 @@ fruta_2 = Fruta(
     300,
     10,
     10,
-    "Z_CLASE_23_inicio_NO_TOUCH copy/images/food/banana/banana__x1_iconic_png_1354829403.png",
+    "JUEGO_FINAL_PROGRA_LABO_1/images/food/banana/banana__x1_iconic_png_1354829403.png",
     0.005,
 )
 fruta_3 = Fruta(
@@ -35,7 +35,7 @@ fruta_3 = Fruta(
     200,
     10,
     10,
-    "Z_CLASE_23_inicio_NO_TOUCH copy/images/food/carrot/carrot__x1_iconic_png_1354829739.png",
+    "JUEGO_FINAL_PROGRA_LABO_1/images/food/carrot/carrot__x1_iconic_png_1354829739.png",
     0.08,
 )
 

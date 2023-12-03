@@ -44,28 +44,6 @@ class FormGameLevel1(Form):
 
         self.shots_fired = 0  # ·· Atributo para contar los disparos del jugador
 
-        # Resto de tu código...
-
-        self.player_1 = Player(
-            x=0,
-            y=0,
-            # width=40,
-            # height=40,
-            speed_walk=20,
-            speed_run=20,
-            gravity=20,
-            jump_power=20,
-            frame_rate_ms=10,
-            move_rate_ms=1000,
-            jump_height=10,
-            # p_scale: int = 1,
-            # interval_time_jump: int = 100
-            p_scale=1,
-            interval_time_jump=100,
-        )
-
-        # player_1 ver para corregir
-
         self.boton1 = Button(
             master=self,
             x=0,
@@ -143,13 +121,13 @@ class FormGameLevel1(Form):
         self.player_1 = Player(
             x=0,
             y=400,
-            speed_walk=8,
+            speed_walk=20,
             speed_run=20,
             gravity=14,
             jump_power=30,
-            frame_rate_ms=150,
-            move_rate_ms=250,
-            jump_height=140,
+            frame_rate_ms=100,
+            move_rate_ms=50,
+            jump_height=100,
             p_scale=0.2,
             interval_time_jump=300,
         )
@@ -233,7 +211,7 @@ class FormGameLevel1(Form):
                 self.player_1.rect.centery,
                 10,
                 path="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Bars/Bar_Segment05.png",
-                frame_rate_ms=80,
+                frame_rate_ms=100,
                 move_rate_ms=50,
                 width=6,
                 height=6,
@@ -249,7 +227,7 @@ class FormGameLevel1(Form):
         for aux_widget in self.widget_list:
             aux_widget.update(lista_eventos)
 
-        for bullet in self.bullet_list:  # revisar player_instance
+        for bullet in self.bullet_list:
             bullet.update(delta_ms, self.plataform_list, self.enemy_group)
 
         # Eliminar balas que estén fuera de la pantalla o hayan colisionado
@@ -274,14 +252,15 @@ class FormGameLevel1(Form):
                 width=5,
                 height=5,
             )
+            self.knife_list.append(knife)  # Agrega el cuchillo a la lista
 
         for knife in self.knife_list:
             knife.update(delta_ms, self.plataform_list, self.enemy_group, self.player_1)
 
-            # Elimina cuchillos que hayan colisionado
-            self.knife_list = [knife for knife in self.knife_list if knife.is_active]
+        # Elimina cuchillos que hayan colisionado
+        self.knife_list = [knife for knife in self.knife_list if knife.is_active]
 
-            self.pb_lives.value = self.player_1.lives
+        self.pb_lives.value = self.player_1.lives
 
     def draw(self):
         super().draw()

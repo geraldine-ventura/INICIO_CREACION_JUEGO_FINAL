@@ -3,8 +3,9 @@ from knife import Knife
 from bullet import Bullet
 from constantes import *
 from auxiliar import Auxiliar
-from enemigo import *
+from enemigo import Enemy
 from botin import frutas_group
+from plataforma import *  ##agregeue solompara probar EXTRA
 
 
 class Player:
@@ -23,45 +24,52 @@ class Player:
         # width,
         p_scale=1,
         interval_time_jump=100,
+        enemy_group=None,
     ) -> None:
+        self.knife_count = 0
+        self.enemy_group = (
+            enemy_group if enemy_group is not None else pygame.sprite.Group()
+        )
+        #  incluso si no se proporciona un grupo de enemigos al crear una instancia de la clase Player, se utilizará un grupo vacío por defecto.
+
         # -------------------------------------------------------------
         self.stay_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Idle ({0}).png",
+            "JUEGO_FINAL_PROGRA_LABO_1/images/caracters/players/cowgirl/Idle ({0}).png",
             1,
             10,
             flip=False,
             scale=p_scale,
         )
         self.stay_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Idle ({0}).png",
+            "JUEGO_FINAL_PROGRA_LABO_1/images/caracters/players/cowgirl/Idle ({0}).png",
             1,
             10,
             flip=True,
             scale=p_scale,
         )
         self.jump_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Jump ({0}).png",
+            "JUEGO_FINAL_PROGRA_LABO_1/images/caracters/players/cowgirl/Jump ({0}).png",
             1,
             10,
             flip=False,
             scale=p_scale,
         )
         self.jump_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Jump ({0}).png",
+            "JUEGO_FINAL_PROGRA_LABO_1/images/caracters/players/cowgirl/Jump ({0}).png",
             1,
             10,
             flip=True,
             scale=p_scale,
         )
         self.walk_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Run ({0}).png",
+            "JUEGO_FINAL_PROGRA_LABO_1/images/caracters/players/cowgirl/Run ({0}).png",
             1,
             8,
             flip=False,
             scale=p_scale,
         )
         self.walk_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Run ({0}).png",
+            "JUEGO_FINAL_PROGRA_LABO_1/images/caracters/players/cowgirl/Run ({0}).png",
             1,
             8,
             flip=True,
@@ -70,14 +78,14 @@ class Player:
 
         ##-----------run-path---------->
         self.run_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Slide ({0}).png",
+            "JUEGO_FINAL_PROGRA_LABO_1/images/caracters/players/cowgirl/Slide ({0}).png",
             1,
             5,
             flip=False,
             scale=p_scale,
         )
         self.run_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Slide ({0}).png",
+            "JUEGO_FINAL_PROGRA_LABO_1/images/caracters/players/cowgirl/Slide ({0}).png",
             1,
             5,
             flip=True,
@@ -86,14 +94,14 @@ class Player:
 
         ##-----------dead-player-path---------->
         self.player_dead_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Dead ({0}).png",
+            "JUEGO_FINAL_PROGRA_LABO_1/images/caracters/players/cowgirl/Dead ({0}).png",
             1,
             10,
             flip=False,
             scale=p_scale,
         )
         self.player_dead_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Dead ({0}).png",
+            "JUEGO_FINAL_PROGRA_LABO_1/images/caracters/players/cowgirl/Dead ({0}).png",
             1,
             10,
             flip=True,
@@ -103,7 +111,7 @@ class Player:
         ##---------player_shoot_path----------->
 
         self.player_shoot_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Shoot ({0}).png",
+            "JUEGO_FINAL_PROGRA_LABO_1/images/caracters/players/cowgirl/Shoot ({0}).png",
             1,
             3,
             flip=False,
@@ -111,7 +119,7 @@ class Player:
             repeat_frame=2,
         )
         self.player_shoot_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Shoot ({0}).png",
+            "JUEGO_FINAL_PROGRA_LABO_1/images/caracters/players/cowgirl/Shoot ({0}).png",
             1,
             3,
             flip=True,
@@ -121,7 +129,7 @@ class Player:
 
         ##-----------knife-path---------->
         self.knife_r = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Melee ({0}).png",
+            "JUEGO_FINAL_PROGRA_LABO_1/images/caracters/players/cowgirl/Melee ({0}).png",
             1,
             7,
             flip=False,
@@ -129,7 +137,7 @@ class Player:
             repeat_frame=1,
         )
         self.knife_l = Auxiliar.getSurfaceFromSeparateFiles(
-            "Z_CLASE_23_inicio_NO_TOUCH/images/caracters/players/cowgirl/Melee ({0}).png",
+            "JUEGO_FINAL_PROGRA_LABO_1/images/caracters/players/cowgirl/Melee ({0}).png",
             1,
             7,
             flip=True,
@@ -154,10 +162,6 @@ class Player:
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-
-        self.bullet_list = []  # puedo crearlo en otro lado esta lista mas genrico
-
-        self.enemy_list = []  # ver si comentar
 
         ###----------------COALISIONES---------->>>>>>>>>>>>>>>>>>>>>
         # está definiendo un rectángulo de colisión que es más estrecho que el rectángulo original
@@ -193,6 +197,10 @@ class Player:
         self.frutas_recolectadas = 0  # mod botin.py
         self.shots_fired = 0  # # Atributo para contar los disparos del jugador
 
+        self.bullet_list = []  # puedo crearlo en otro lado esta lista mas genrico
+
+        self.enemy_list = []  # ver si comentar
+
     # --------------------------------botin-----------------------
     def check_colision_frutas(self, frutas_group):
         for fruta in frutas_group:
@@ -203,8 +211,6 @@ class Player:
     ### CORREGIR COALICIONES ---------verr no funka------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     def receive_shoot(self, direction, player_rect):
-        from bullet import Bullet  # Importa solo cuando sea necesario
-
         print("player_rect:", player_rect)
 
         if self.collition_rect.colliderect(player_rect):
@@ -265,7 +271,7 @@ class Player:
                 speed=40,
                 path="JUEGO_FINAL1/images/caracters/players/warrior_woman_01/1_IDLE_000.png",
                 frame_rate_ms=100,
-                move_rate_ms=100,
+                move_rate_ms=50,
                 width=5,
                 height=5,
             )
@@ -298,40 +304,49 @@ class Player:
         # Puedes realizar acciones adicionales cuando el jugador recibe un ataque de cuchillo
         # self.reset_animation()
 
-    def knife(self, on_off=True):
-        self.is_knife = on_off
-        if (
-            on_off == True
-            and self.is_jump == False
-            and self.is_fall == False
-            and self.is_shoot == False
-        ):
-            for enemy in self.enemy_list:
-                if self.collition_rect.colliderect(enemy.rect):
-                    enemy.receive_knife_damage()
-                    enemy.reset_position()
-
-            knife_1 = Knife(
+    def knife(self):
+        if self.knife_count < 3:
+            knife = Knife(
                 owner=self,
-                x_init=self.rect.right,
-                y_init=self.rect.center[1],
-                x_end=ANCHO_VENTANA,
-                y_end=self.rect.y,
+                x_init=self.rect.centerx,
+                y_init=self.rect.centery,
+                x_end=200,  # Ajusta los parámetros necesarios
+                y_end=200,
                 speed=20,
                 frame_rate_ms=100,
                 move_rate_ms=50,
                 width=5,
                 height=5,
             )
-            self.knife_list.append(knife_1)
+            self.knife_list.append(knife)
+            self.knife_count += 1
 
-            if self.animation != self.knife_r and self.animation != self.knife_l:
-                self.frame = 0
-                self.is_shoot = True
-                if self.direction == DIRECTION_R:
-                    self.animation = self.knife_r
-                else:
-                    self.animation = self.knife_l
+        if self.knife_count == 3:
+            # Eliminar enemigos alcanzados por cuchillos
+            enemies_hit = pygame.sprite.spritecollide(self, self.enemy_group, False)
+            for enemy in enemies_hit:
+                enemy.kill()  # Elimina el enemigo del grupo
+
+            # Añadir el doble de enemigos
+            for _ in range(2):
+                new_enemy = Enemy(
+                    x=450,
+                    y=400,
+                    speed_walk=20,
+                    speed_run=20,
+                    gravity=14,
+                    jump_power=30,
+                    frame_rate_ms=150,
+                    move_rate_ms=50,
+                    jump_height=140,
+                    p_scale=0.08,
+                    interval_time_jump=300,
+                    enemy_group=self.enemy_group,
+                )
+                self.enemy_group.add(new_enemy)
+
+            # Reiniciar contador de cuchillos
+            self.knife_count = 0
 
     ####----------jump/saltar------>>>>>>>>>>>>
     def jump(self, on_off=True):
@@ -436,7 +451,6 @@ class Player:
         # Suponiendo que frutas_group es una referencia al grupo de frutas
         self.check_colision_frutas(frutas_group)
 
-        # ------------------------------------------------------------------------
         if enemy_shoot_rect:
             self.check_collision(enemy_shoot_rect)
 
@@ -483,8 +497,6 @@ class Player:
             self.run(DIRECTION_L)
 
         #######---------------------------dead------------------->>>>>>>>>>>>>>>>>>
-        # Detecta si se colisiono con una bala al jugador
-        #  y llama al método dead con dirección "Right". ///ARREGLAR LA COALISION!!!!!
 
         #######---------------------------stay------------------->>>>>>>>>>>>>>>>>>
         if (
@@ -509,7 +521,7 @@ class Player:
             self.shoot(False)
 
         if not keys[pygame.K_a]:
-            self.knife(False)
+            self.knife()
         #######---------------------------shoot------------------->>>>>>>>>>>>>>>>>>
         if keys[pygame.K_s] and not keys[pygame.K_a]:
             self.shoot()

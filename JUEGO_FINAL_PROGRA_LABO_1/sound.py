@@ -38,14 +38,14 @@ def generar_texto(fuente: str, tamaño: float, contenido: str, color: tuple):
 
 # Cargar sonidos
 sound_bullet_hit_enemy = pygame.mixer.Sound(
-    "Z_CLASE_23_inicio_NO_TOUCH copy/images/tileset/forest/Objects/shoot.mp3"
+    "JUEGO_FINAL_PROGRA_LABO_1/images/tileset/forest/Objects/shoot.mp3"
 )
 sound_bullet_hit_player = pygame.mixer.Sound(
-    "Z_CLASE_23_inicio_NO_TOUCH copy/images/tileset/forest/Objects/shoot.mp3"
+    "JUEGO_FINAL_PROGRA_LABO_1/images/tileset/forest/Objects/shoot.mp3"
 )
 # Carga el sonido desde un archivo
 impact_sound = pygame.mixer.Sound(
-    "Z_CLASE_23_inicio_NO_TOUCH copy/images/tileset/forest/Objects/shoot.mp3"
+    "JUEGO_FINAL_PROGRA_LABO_1/images/tileset/forest/Objects/shoot.mp3"
 )
 
 
