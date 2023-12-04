@@ -86,7 +86,7 @@ class FormMenuB(Form):
             h=40,
             color_background=None,
             color_border=None,
-            image_background="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Buttons/Button_XL_08.png",
+            image_background="JUEGO_FINAL_PROGRA_LABO_1/images/gui/set_gui_01/Comic_Border/Buttons/Button_XL_08.png",
             text="Text",
             font="Verdana",
             font_size=30,
@@ -100,7 +100,7 @@ class FormMenuB(Form):
             h=40,
             color_background=None,
             color_border=None,
-            image_background="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Buttons/Button_XL_08.png",
+            image_background="JUEGO_FINAL_PROGRA_LABO_1/images/gui/set_gui_01/Comic_Border/Buttons/Button_XL_08.png",
             text="Text",
             font="Verdana",
             font_size=30,
@@ -122,7 +122,7 @@ class FormMenuB(Form):
     def on_click_boton2(self, parametro):
         import sqlite3
 
-        with sqlite3.connect("Z_CLASE_23_inicio_NO_TOUCH/db/db_score.db") as conexion:
+        with sqlite3.connect("JUEGO_FINAL_PROGRA_LABO_1/db/db_score.db") as conexion:
             try:
                 conexion.execute(
                     "insert into score (nombre,value) values (?,?)",
@@ -133,7 +133,7 @@ class FormMenuB(Form):
                 print("Error")
 
     def on_click_boton3(self, parametro):
-        with sqlite3.connect("Z_CLASE_23_inicio_NO_TOUCH/db/db_score.db") as conexion:
+        with sqlite3.connect("JUEGO_FINAL_PROGRA_LABO_1/db/db_score.db") as conexion:
             try:
                 sentencia = """ create  table score
                                 (
@@ -148,7 +148,7 @@ class FormMenuB(Form):
                 print("La tabla ya existe")
 
     def on_click_boton4(self, parametro):
-        with sqlite3.connect("Z_CLASE_23_inicio_NO_TOUCH/db/db_score.db") as conexion:
+        with sqlite3.connect("JUEGO_FINAL_PROGRA_LABO_1/db/db_score.db") as conexion:
             cursor = conexion.execute("SELECT * FROM score")
             for fila in cursor:
                 print(fila)

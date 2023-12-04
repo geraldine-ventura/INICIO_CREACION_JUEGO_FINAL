@@ -41,7 +41,7 @@ class FormGameLevel1(Form):
             active,
         )
 
-        # Crear grupos de sprites
+        # Crear grupos de spritesJUEGO_FINAL_PROGRA_LABO_1/images/gui/set_gui_01/Comic_Border/Buttons/Button_XL_08.png
         self.bullet_group = pygame.sprite.Group()
         self.enemy_group = enemy_group  # Ya tienes un grupo de enemigos, úsalo si es un pygame.sprite.Group
 
@@ -53,7 +53,7 @@ class FormGameLevel1(Form):
             h=50,
             color_background=None,
             color_border=None,
-            image_background="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Buttons/Button_L_02.png",
+            image_background="JUEGO_FINAL_PROGRA_LABO_1/images/gui/set_gui_01/Comic_Border/Buttons/Button_L_02.png",
             on_click=self.on_click_boton1,
             on_click_param="form_menu_B",
             text="BACK",
@@ -69,7 +69,7 @@ class FormGameLevel1(Form):
             h=50,
             color_background=None,
             color_border=None,
-            image_background="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Buttons/Button_M_02.png",
+            image_background="JUEGO_FINAL_PROGRA_LABO_1/images/gui/set_gui_01/Comic_Border/Buttons/Button_M_02.png",
             on_click=self.on_click_boton1,
             on_click_param="form_menu_B",
             text="PAUSE",
@@ -85,7 +85,7 @@ class FormGameLevel1(Form):
             h=50,
             color_background=None,
             color_border=None,
-            image_background="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Buttons/Button_M_02.png",
+            image_background="JUEGO_FINAL_PROGRA_LABO_1/images/gui/set_gui_01/Comic_Border/Buttons/Button_M_02.png",
             on_click=self.on_click_shoot,  # boton disparar enemys
             on_click_param="form_menu_B",
             text="SHOOT",
@@ -102,8 +102,8 @@ class FormGameLevel1(Form):
             h=50,
             color_background=None,
             color_border=None,
-            image_background="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Bars/Bar_Background01.png",
-            image_progress="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Bars/Bar_Segment05.png",
+            image_background="JUEGO_FINAL_PROGRA_LABO_1/images/gui/set_gui_01/Comic_Border/Bars/Bar_Background01.png",
+            image_progress="JUEGO_FINAL_PROGRA_LABO_1/images/gui/set_gui_01/Comic_Border/Bars/Bar_Segment05.png",
             value=5,
             value_max=5,
         )
@@ -121,7 +121,7 @@ class FormGameLevel1(Form):
             y=0,
             width=w,
             height=h,
-            path="Z_CLASE_23_inicio_NO_TOUCH/images/back/depositphotos_56565763-stock-illustration-seamless-background-fabulous-night-forest (1).jpg",
+            path="JUEGO_FINAL_PROGRA_LABO_1/images/back/depositphotos_56565763-stock-illustration-seamless-background-fabulous-night-forest (1).jpg",
         )
 
         self.player_1 = Player(

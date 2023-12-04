@@ -14,7 +14,7 @@ class FormMenuA(Form):
         super().__init__(
             name, master_surface, x, y, w, h, color_background, color_border, active
         )
-
+        # JUEGO_FINAL_PROGRA_LABO_1/images/gui/set_gui_01/Comic_Border/Buttons/Button_M_02.png
         self.boton1 = Button(
             master=self,
             x=20,
@@ -23,7 +23,7 @@ class FormMenuA(Form):
             h=50,
             color_background=None,
             color_border=None,
-            image_background="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Buttons/Button_M_02.png",
+            image_background="JUEGO_FINAL_PROGRA_LABO_1/images/gui/set_gui_01/Comic_Border/Buttons/Button_M_02.png",
             on_click=self.on_click_boton1,
             on_click_param="",
             text="SUMA +",
@@ -39,7 +39,7 @@ class FormMenuA(Form):
             h=50,
             color_background=None,
             color_border=None,
-            image_background="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Buttons/Button_M_02.png",
+            image_background="JUEGO_FINAL_PROGRA_LABO_1/images/gui/set_gui_01/Comic_Border/Buttons/Button_M_02.png",
             on_click=self.on_click_boton2,
             on_click_param="",
             text="RESTA -",
@@ -55,7 +55,7 @@ class FormMenuA(Form):
             h=50,
             color_background=None,
             color_border=None,
-            image_background="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Buttons/Button_M_02.png",
+            image_background="JUEGO_FINAL_PROGRA_LABO_1/images/gui/set_gui_01/Comic_Border/Buttons/Button_M_02.png",
             on_click=self.on_click_boton3,
             on_click_param="form_game_L1",
             text="JUGAR",
@@ -71,7 +71,7 @@ class FormMenuA(Form):
             h=50,
             color_background=None,
             color_border=None,
-            image_background="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Buttons/Button_M_02.png",
+            image_background="JUEGO_FINAL_PROGRA_LABO_1/images/gui/set_gui_01/Comic_Border/Buttons/Button_M_02.png",
             on_click=self.on_click_boton3,
             on_click_param="form_menu_B",
             text="SQL",
@@ -87,7 +87,7 @@ class FormMenuA(Form):
             h=50,
             color_background=None,
             color_border=None,
-            image_background="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Buttons/Button_M_02.png",
+            image_background="JUEGO_FINAL_PROGRA_LABO_1/images/gui/set_gui_01/Comic_Border/Buttons/Button_M_02.png",
             on_click=self.on_click_boton3,
             on_click_param="form_menu_C",
             text="Vector",
@@ -104,7 +104,7 @@ class FormMenuA(Form):
             h=50,
             color_background=None,
             color_border=None,
-            image_background="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Buttons/Button_XL_08.png",
+            image_background="JUEGO_FINAL_PROGRA_LABO_1/images/gui/set_gui_01/Comic_Border/Buttons/Button_XL_08.png",
             text="Text",
             font="Verdana",
             font_size=30,
@@ -118,8 +118,8 @@ class FormMenuA(Form):
             h=50,
             color_background=None,
             color_border=None,
-            image_background="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Bars/Bar_Background01.png",
-            image_progress="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Bars/Bar_Segment05.png",
+            image_background="JUEGO_FINAL_PROGRA_LABO_1/images/gui/set_gui_01/Comic_Border/Bars/Bar_Background01.png",
+            image_progress="JUEGO_FINAL_PROGRA_LABO_1/images/gui/set_gui_01/Comic_Border/Bars/Bar_Segment05.png",
             value=3,
             value_max=8,
         )
