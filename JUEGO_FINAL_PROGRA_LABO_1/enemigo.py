@@ -213,19 +213,6 @@ class Enemy(pygame.sprite.Sprite):
             self.reset_animation()
             # Realiza otras acciones necesarias en caso de colisión
 
-    """ 
-    # En la clase Enemy
-    def receive_shoot(self, bullet_group, bullet_pos):
-        # Verifica la colisión con el grupo de balas del jugador
-        hits = pygame.sprite.spritecollide(self, bullet_group, True)
-        if hits:
-            print("Colisión con enemigo detectada! Cambia de animación a dead.")
-            # Colisión con disparo del jugador, cambiar animación a dead
-            self.is_dead = True
-            # Restablece la animación después de cambiarla
-            self.reset_animation()
-            # Realiza otras acciones necesarias en caso de colisión """
-
     # lógica de cambio de dirección
     def do_movement(self, delta_ms, plataform_list):
         self.tiempo_transcurrido_move += delta_ms

@@ -206,6 +206,7 @@ class FormGameLevel1(Form):
     def draw(self):
         super().draw()
         self.static_background.draw(self.surface)
+        self.player_1.draw(self.surface)
 
         for aux_widget in self.widget_list:
             aux_widget.draw()
@@ -215,8 +216,6 @@ class FormGameLevel1(Form):
 
         for enemy_element in self.enemy_list:
             enemy_element.draw(self.surface)
-
-        self.player_1.draw(self.surface)
 
         for bullet_element in self.bullet_list:
             bullet_element.draw(self.surface)

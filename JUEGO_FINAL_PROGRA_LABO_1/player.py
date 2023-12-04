@@ -5,7 +5,8 @@ from constantes import *
 from auxiliar import Auxiliar
 from enemigo import Enemy
 from botin import frutas_group
-from plataforma import *  ##agregeue solompara probar EXTRA
+
+# from plataforma import *  ##agregue solo para probar EXTRA
 
 
 class Player:
@@ -162,6 +163,7 @@ class Player:
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.blade_hits = 0  # num ,cada vez que mi jugador recibe un cuchillazo
 
         ###----------------COALISIONES---------->>>>>>>>>>>>>>>>>>>>>
         # está definiendo un rectángulo de colisión que es más estrecho que el rectángulo original
@@ -195,11 +197,9 @@ class Player:
         self.interval_time_jump = interval_time_jump
         # Inicialización de la clase Jugador
         self.frutas_recolectadas = 0  # mod botin.py
-        self.shots_fired = 0  # # Atributo para contar los disparos del jugador
 
         self.bullet_list = []  # puedo crearlo en otro lado esta lista mas genrico
-
-        self.enemy_list = []  # ver si comentar
+        self.enemy_group = pygame.sprite.Group()
 
     # --------------------------------botin-----------------------
     def check_colision_frutas(self, frutas_group):
@@ -208,11 +208,9 @@ class Player:
                 self.frutas_recolectadas += 1
                 fruta.kill()  # Elimina la fruta del juego al ser rec
 
-    ### CORREGIR COALICIONES ---------verr no funka------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>
+    ### receive_shoot player------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     def receive_shoot(self, direction, player_rect):
-        print("player_rect:", player_rect)
-
         if self.collition_rect.colliderect(player_rect):
             print("Colisión con enemigo detectada! Cambio de animación a dead.")
             if direction == DIRECTION_R:
@@ -220,13 +218,26 @@ class Player:
             else:
                 self.animation = self.player_dead_l
             self.reset_animation()  # Restablezco la animación después de cambiarla
-
+            self.shots_fired = 0
             self.lives -= 1
             print("Vidas restantes:", self.lives)
 
             if self.lives <= 0:
                 print("Game Over")
                 # dejo la logica para reiniciar el juego, mostrar un mensaje, etc.
+
+    def register_blade_hit(self):
+        print("El jugador ha recibido un cuchillazo.")
+        self.blade_hits += 1
+
+        # Verificar si el jugador ha recibido tres cuchillazos
+        if self.blade_hits >= 3:
+            self.lives -= 1
+            print("Vidas restantes:", self.lives)
+
+            if self.lives <= 0:
+                print("Game Over")
+                # Lógica para manejar la muerte del jugador, reiniciar el juego, etc.
 
     def walk(self, direction):
         if self.is_jump == False and self.is_fall == False:
@@ -308,6 +319,7 @@ class Player:
         if self.knife_count < 3:
             knife = Knife(
                 owner=self,
+                direction=self.direction,
                 x_init=self.rect.centerx,
                 y_init=self.rect.centery,
                 x_end=200,  # Ajusta los parámetros necesarios
@@ -394,7 +406,7 @@ class Player:
         self.ground_collition_rect.y += delta_y
 
     #################revisar so_momwnt para que mi personaje se pueda mover
-    def do_movement(self, delta_ms, plataform_list, enemy_list):
+    def do_movement(self, delta_ms, plataform_list, enemy_group):
         self.tiempo_transcurrido_move += delta_ms
         if self.tiempo_transcurrido_move >= self.move_rate_ms:
             self.tiempo_transcurrido_move = 0
@@ -411,7 +423,7 @@ class Player:
                 self.change_y(self.gravity)
 
                 # Itera sobre la lista de enemigos y llama al método check_jump_collision durante el salto
-                for enemy in enemy_list:
+                for enemy in enemy_group:
                     enemy.check_jump_collision(self.collition_rect)
         else:
             if self.is_jump:
@@ -444,9 +456,9 @@ class Player:
                 self.frame = 0
 
     def update(self, delta_ms, plataform_list, enemy_shoot_rect=None):
-        self.do_movement(delta_ms, plataform_list, self.enemy_list)
+        self.do_movement(delta_ms, plataform_list, self.enemy_group)
         self.do_animation(delta_ms)
-
+        self.do_movement(delta_ms, plataform_list, self.enemy_group)
         # ----------------------------------------botin----------------------------
         # Suponiendo que frutas_group es una referencia al grupo de frutas
         self.check_colision_frutas(frutas_group)

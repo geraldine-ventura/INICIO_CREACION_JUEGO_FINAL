@@ -26,10 +26,11 @@ class Bullet(pygame.sprite.Sprite):
         path,
         frame_rate_ms,
         move_rate_ms,
-        direction,
+        direction,  # Agrega el parámetro direction aquí
         width=5,
         height=5,
-    ) -> None:
+    ):
+        super().__init__()
         self.direction = direction
         self.tiempo_transcurrido_move = 0
         self.image = pygame.image.load(path).convert()
@@ -50,6 +51,22 @@ class Bullet(pygame.sprite.Sprite):
         self.move_y = math.sin(angle) * speed
 
         self.is_active = True
+
+        self.owner = owner  # Propietario de la bala (puede ser el jugador o un enemigo)
+        self.image = pygame.image.load(path).convert_alpha()
+        self.rect = self.image.get_rect()
+        self.rect.x = x_init
+        self.rect.y = y_init
+
+        # Atributos adicionales de la bala%%%%%***********++
+        self.x_end = x_end
+        self.y_end = y_end
+        self.speed = speed
+
+        self.width = width
+        self.height = height
+
+        # **********************
 
     def change_x(self, delta_x):
         self.x = self.x + delta_x
@@ -73,11 +90,11 @@ class Bullet(pygame.sprite.Sprite):
             self.change_y(self.move_y)
             self.check_impact(enemy_group, player_1)
 
-    def shoot(self):
-        # ya se ceo en class player
-        # Este método parece estar creando una nueva bala, pero ya estás en una instancia de Bullet.
-        # Considera si realmente necesitas crear otra bala aquí o si puedes usar la instancia actual.
-        pass
+    def do_animation(self, delta_ms):
+        self.tiempo_transcurrido_animation += delta_ms
+        if self.tiempo_transcurrido_animation >= self.frame_rate_ms:
+            self.tiempo_transcurrido_animation = 0
+            pass
 
     def check_impact(self, enemy_group, player_1):
         if self.is_active:
@@ -102,8 +119,33 @@ class Bullet(pygame.sprite.Sprite):
                 player_1.shots_fired += 1
                 if player_1.shots_fired >= 3:
                     # Duplicar enemigos
-                    enemy1 = Enemy(...)
-                    enemy2 = Enemy(...)
+                    enemy1 = Enemy(
+                        x=450,
+                        y=400,
+                        speed_walk=6,
+                        speed_run=5,
+                        gravity=14,
+                        jump_power=30,
+                        frame_rate_ms=150,
+                        move_rate_ms=50,
+                        jump_height=140,
+                        p_scale=0.08,
+                        interval_time_jump=300,
+                    )
+                    enemy2 = Enemy(
+                        x=900,
+                        y=400,
+                        speed_walk=6,
+                        speed_run=5,
+                        gravity=14,
+                        jump_power=30,
+                        frame_rate_ms=150,
+                        move_rate_ms=50,
+                        jump_height=140,
+                        p_scale=0.08,
+                        interval_time_jump=300,
+                        enemy_group=enemy_group,
+                    )
                     enemy_group.add(enemy1, enemy2)
                     player_1.shots_fired = 0
 
@@ -113,5 +155,5 @@ class Bullet(pygame.sprite.Sprite):
     def draw(self, screen):
         if self.is_active:
             if DEBUG:
-                pygame.draw.rect(screen, color=(255, 0, 0), rect=self.rect)
+                pygame.draw.rect(screen, color=(255, 0, 0), rect=self.collition_rect)
             screen.blit(self.image, self.rect)

@@ -8,9 +8,10 @@ from gui_form_menu_B import FormMenuB
 from gui_form_menu_C import FormMenuC
 from gui_form_menu_game_l1 import FormGameLevel1
 
+pygame.init()
 flags = DOUBLEBUF
 screen = pygame.display.set_mode((ANCHO_VENTANA, ALTO_VENTANA), flags, 16)
-pygame.init()
+
 clock = pygame.time.Clock()
 enemy_group = pygame.sprite.Group()
 
@@ -74,6 +75,7 @@ while True:
     keys = pygame.key.get_pressed()
 
     delta_ms = clock.tick(FPS)
+    delta_sec = delta_ms / 1000.0  # Convierte a segundos>>>>>>>>>>>>>>
 
     aux_form_active = Form.get_active()
     if aux_form_active != None:  # Verifica si hay una forma activa.

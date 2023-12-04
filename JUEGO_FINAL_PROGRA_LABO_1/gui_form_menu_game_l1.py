@@ -40,9 +40,10 @@ class FormGameLevel1(Form):
             color_border,
             active,
         )
-        self.enemy_group = enemy_group
 
-        self.shots_fired = 0  # ·· Atributo para contar los disparos del jugador
+        # Crear grupos de sprites
+        self.bullet_group = pygame.sprite.Group()
+        self.enemy_group = enemy_group  # Ya tienes un grupo de enemigos, úsalo si es un pygame.sprite.Group
 
         self.boton1 = Button(
             master=self,
@@ -107,22 +108,27 @@ class FormGameLevel1(Form):
             value_max=5,
         )
 
-        self.widget_list = [self.boton1, self.boton2, self.boton_shoot, self.pb_lives]
+        self.widget_list = [
+            self.boton1,
+            self.boton2,
+            self.boton_shoot,
+            self.pb_lives,
+        ]
         self.render()
         # --- GAME ELEMENTS ---
         self.static_background = Background(
             x=0,
             y=0,
             width=w,
-            height=h,  # ver
+            height=h,
             path="Z_CLASE_23_inicio_NO_TOUCH/images/back/depositphotos_56565763-stock-illustration-seamless-background-fabulous-night-forest (1).jpg",
         )
 
         self.player_1 = Player(
             x=0,
             y=400,
-            speed_walk=20,
-            speed_run=20,
+            speed_walk=6,
+            speed_run=12,
             gravity=14,
             jump_power=30,
             frame_rate_ms=100,
@@ -134,6 +140,7 @@ class FormGameLevel1(Form):
 
         # lo defino como un atributo de la instancia (self.player_rect), en lugar de una variable local.
         self.player_ground_collition_rect = self.player_1.ground_collition_rect
+        self.shots_fired = 0  # ·· Atributo para contar los disparos del jugador
 
         ##------------------------------------------------------ # Crear el grupo de enemigos----------------------
 
@@ -170,9 +177,7 @@ class FormGameLevel1(Form):
         )
 
         self.enemy_group.add(enemy1, enemy2)
-        # Añado instancias de Bullet y Knife a tu clase
-        self.bullet_list = []
-        self.knife_list = []  # Asegúrate de agregar esta línea
+        self.bullet_group = pygame.sprite.Group()
 
         # *gregar mas plataformas a JUEGO_GAME_FINAL1
         self.plataform_list = []
@@ -198,47 +203,84 @@ class FormGameLevel1(Form):
             Plataform(x=900, y=360, width=50, height=50, type=14)
         )
 
+        # ···> Añado instancias de Bullet y Knife a tu clase
+
+        self.knife_list = []  # Asegúrate de agregar esta línea
+
     def on_click_boton1(self, parametro):
         self.set_active(parametro)
+
+    # ... (código anterior) ...
 
     def on_click_shoot(self, parametro):
         for enemy_element in self.enemy_group:
             bullet = Bullet(
-                enemy_element,
-                enemy_element.rect.centerx,
-                enemy_element.rect.centery,
-                self.player_1.rect.centerx,
-                self.player_1.rect.centery,
-                10,
-                path="Z_CLASE_23_inicio_NO_TOUCH/images/gui/set_gui_01/Comic_Border/Bars/Bar_Segment05.png",
+                owner=enemy_element,
+                x_init=enemy_element.rect.centerx,
+                y_init=enemy_element.rect.centery,
+                x_end=self.player_1.rect.centerx,
+                y_end=self.player_1.rect.centery,
+                speed=20,
+                path="CLASE_23_inicio_juego/images/gui/set_gui_01/Comic_Border/Bars/Bar_Segment05.png",
                 frame_rate_ms=100,
-                move_rate_ms=50,
-                width=6,
-                height=6,
-                direction="left",
+                move_rate_ms=20,
+                direction=DIRECTION_R,
+                width=5,
+                height=5,
             )
-            """ self.bullet_group.add(bullet)  #!! """
 
-    def render(self):  # extra para buscar soluci de self.widget_list
-        if self.color_background is not None:
-            self.surface.fill(self.color_background)
+            self.bullet_group.add(bullet)
 
     def update(self, lista_eventos, keys, delta_ms):
+        # Obtener o calcular los valores de direction y player_rect
+        direction = (
+            "izquierda"
+            if keys[pygame.K_LEFT]
+            else "derecha"
+            if keys[pygame.K_RIGHT]
+            else "ninguna"
+        )
+        player_rect = self.player_1.ground_collition_rect
+        # ---------------------------------------->>>
+        # Verificar colisiones entre balas y el jugador
+        hits_player = pygame.sprite.spritecollide(
+            self.player_1, self.bullet_group, True
+        )
+        for hit in hits_player:
+            # Realizar acciones relacionadas con la colisión (si es necesario)
+            self.player_1.lives -= 1  # Ejemplo: Restar una vida al jugador
+
+        # Verificar colisiones entre balas y enemigos
+        hits = pygame.sprite.groupcollide(
+            self.enemy_group, self.bullet_group, dokilla=True, dokillb=True
+        )
+
+        for enemy_element, bullet_element in hits.items():
+            # Realizar acciones relacionadas con la colisión (si es necesario)
+            enemy_element.receive_shoot(
+                bullet_element[0]
+            )  # Ejemplo: Hacer que el enemigo reciba disparos
+        # ---------------------------------------->>>
+
         for aux_widget in self.widget_list:
             aux_widget.update(lista_eventos)
 
-        for bullet in self.bullet_list:
-            bullet.update(delta_ms, self.plataform_list, self.enemy_group)
-
+        for bullet_element in self.bullet_group:
+            bullet_element.update(
+                delta_ms, self.plataform_list, self.enemy_group, self.player_1
+            )
         # Eliminar balas que estén fuera de la pantalla o hayan colisionado
-        self.bullet_list = [bullet for bullet in self.bullet_list if bullet.is_alive()]
+        self.bullet_group = pygame.sprite.Group(
+            [bullet for bullet in self.bullet_group if bullet.is_alive()]
+        )
 
         for enemy_element in self.enemy_group:
             enemy_element.update(delta_ms, self.plataform_list)
 
         self.player_1.events(delta_ms, keys)
         self.player_1.update(delta_ms, self.plataform_list)
-
+        self.pb_lives.value = self.player_1.lives
+        # ·--------------------------knife
         if keys[K_a]:
             knife = Knife(
                 owner=self.player_1,
@@ -251,6 +293,7 @@ class FormGameLevel1(Form):
                 move_rate_ms=50,
                 width=5,
                 height=5,
+                direction=DIRECTION_R,
             )
             self.knife_list.append(knife)  # Agrega el cuchillo a la lista
 
@@ -261,6 +304,9 @@ class FormGameLevel1(Form):
         self.knife_list = [knife for knife in self.knife_list if knife.is_active]
 
         self.pb_lives.value = self.player_1.lives
+        # Mover estas líneas dentro del bloque update
+
+        self.player_1.receive_shoot(direction, player_rect)
 
     def draw(self):
         super().draw()
@@ -279,9 +325,5 @@ class FormGameLevel1(Form):
 
         self.player_1.draw(self.surface)
 
-        for bullet in self.bullet_list:
-            bullet.draw(self.surface)
-
-
-# Detener sonidos al salir del juego
-stop_sounds()
+        for bullet_element in self.bullet_group:
+            bullet_element.draw(self.surface)
